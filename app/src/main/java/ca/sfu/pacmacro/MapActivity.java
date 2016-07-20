@@ -1,7 +1,6 @@
 package ca.sfu.pacmacro;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,9 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -22,23 +20,37 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.PacMacroClient;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LocationManager mLocationManager;
+    private PacMacroClient mApiClient;
+    private final List<CharacterData> characterDataList = new ArrayList<>();
+    private CharacterData player;
+    private CharacterManager mCharacterManager;
+
     private int PERMISSION_RESPONSE_CODE = 0;
+    private String TAG = "MapActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        mApiClient = new PacMacroClient();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
 
@@ -55,56 +67,59 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mCharacterManager = new CharacterManager(mApiClient, new InitializeMarkerCallback() {
+            @Override
+            public Marker initializeMarker(LatLng latLng, String name) {
+                return mMap.addMarker(new MarkerOptions().position(latLng).title(name));
+            }
+        });
 
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_RESPONSE_CODE);
         }
         else {
-            initializeMarker();
+            registerLocationUpdateCallback();
         }
     }
 
-    private void initializeMarker() {
-
-        LatLng myLocation = new LatLng(49, -122);
-        final Marker marker = mMap.addMarker(new MarkerOptions().position(myLocation).title("Me"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                updateLocation(marker, location);
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
+    private void registerLocationUpdateCallback() {
+        Log.d(TAG, "started registerLocationUpdateCallback");
 
         try {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000l, 1.0f, locationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000l, 1.0f, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    updateLocation(location);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
         }
         catch (SecurityException ignored) {
 
         }
     }
 
-    private void updateLocation(Marker marker, Location location) {
-        marker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+
+
+    private void updateLocation(Location location) {
+        // TODO: update the character associated to this phone's position
         Snackbar.make(getWindow().getDecorView().getRootView(), "Location updated", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -116,7 +131,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                initializeMarker();
+                registerLocationUpdateCallback();
 
             } else {
 
