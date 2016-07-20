@@ -1,11 +1,9 @@
-package ca.sfu.pacmacro;
+package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,9 +17,10 @@ import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.GhostReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.Model.Character;
 
 /**
- * Created by AlexLand on 2016-07-19.
+ * Handle the creation and updating of Characters and their location.
  */
 public class CharacterManager {
     private final String TAG = "CharacterManager";
@@ -43,15 +42,6 @@ public class CharacterManager {
                 mApiClient.getGhosts();
             }
         }, 0, 500);
-
-
-        // Initialize all characters with markers pointing to the Harbor Center
-//        LatLng latLng = new LatLng(49.2847564,-123.1118716);
-//        for (Character.CharacterType type: Character.CharacterType.values()) {
-//            Marker marker = callback.initializeMarker(latLng, type.name());
-//            Character character = new Character(type, marker);
-//            mCharacterList.add(character);
-//        }
     }
 
     @Subscribe

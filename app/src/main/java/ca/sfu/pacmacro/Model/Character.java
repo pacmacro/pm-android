@@ -1,12 +1,10 @@
-package ca.sfu.pacmacro;
+package ca.sfu.pacmacro.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import ca.sfu.pacmacro.API.model.Id;
-
 /**
- * Created by AlexLand on 2016-07-19.
+ * Data structure containing a character's information and position
  */
 public class Character {
     private int id;
@@ -18,7 +16,7 @@ public class Character {
         INKY,
         BLINKY,
         PINKY,
-        CLYDE;
+        CLYDE
     }
     public Character(int id, CharacterType characterType, Marker marker) {
         this.id = id;

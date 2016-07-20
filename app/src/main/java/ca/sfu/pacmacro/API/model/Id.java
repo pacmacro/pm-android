@@ -1,7 +1,7 @@
 package ca.sfu.pacmacro.API.model;
 
 /**
- * Created by AlexLand on 2016-07-16.
+ * ID data structure for use with the API
  */
 public class Id {
     private int id;

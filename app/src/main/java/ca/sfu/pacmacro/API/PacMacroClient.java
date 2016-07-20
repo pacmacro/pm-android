@@ -12,6 +12,7 @@ import java.util.Map;
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.GhostReceivedEvent;
+import ca.sfu.pacmacro.API.model.Id;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -19,7 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * Created by AlexLand on 2016-07-16.
+ * Retrofit API client for the PacMacro server API
  */
 public class PacMacroClient {
     private Retrofit retrofit;
@@ -41,7 +42,7 @@ public class PacMacroClient {
         Map<String, Float> latlngMap = new HashMap<>();
         latlngMap.put(JsonProperties.PROPERTY_LATITUDE, latitude);
         latlngMap.put(JsonProperties.PROPERTY_LONGITUDE, longitude);
-        service.addGhost(latlngMap).enqueue(new Callback() {
+        service.addGhost(latlngMap).enqueue(new Callback<Id>() {
             @Override
             public void onResponse(Response response) {
                 EventBus.getDefault().post(new CharacterSentEvent(CharacterSentEvent.RequestStatus.SUCCESS, response));

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -20,21 +21,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.PacMacroClient;
+import ca.sfu.pacmacro.Controller.CharacterManager;
+import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LocationManager mLocationManager;
     private PacMacroClient mApiClient;
-    private final List<CharacterData> characterDataList = new ArrayList<>();
-    private CharacterData player;
+    private CharacterData mPlayer;
     private CharacterManager mCharacterManager;
 
     private int PERMISSION_RESPONSE_CODE = 0;
@@ -89,7 +86,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d(TAG, "started registerLocationUpdateCallback");
 
         try {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000l, 1.0f, new LocationListener() {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 1.0f, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     updateLocation(location);
@@ -116,16 +113,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-
-
     private void updateLocation(Location location) {
         // TODO: update the character associated to this phone's position
         Snackbar.make(getWindow().getDecorView().getRootView(), "Location updated", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_RESPONSE_CODE) {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
@@ -142,7 +137,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 builder.create().show();
                 // TODO: real shit here
             }
-            return;
         }
     }
 

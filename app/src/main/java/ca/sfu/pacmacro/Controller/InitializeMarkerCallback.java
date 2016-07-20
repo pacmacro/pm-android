@@ -1,10 +1,10 @@
-package ca.sfu.pacmacro;
+package ca.sfu.pacmacro.Controller;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 /**
- * Created by AlexLand on 2016-07-19.
+ * Callback interface for creating markers on the map
  */
 public interface InitializeMarkerCallback {
     Marker initializeMarker(LatLng latLng, String name);

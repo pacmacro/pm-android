@@ -12,7 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
- * Created by AlexLand on 2016-07-14.
+ * Retrofit interface for the PacMacro server API
  */
 public interface PacMacroService {
     @Headers("Content-Type: application/json")
