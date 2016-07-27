@@ -1,6 +1,7 @@
 package ca.sfu.pacmacro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -70,6 +71,9 @@ public class PlayerFragment extends Fragment {
                 }
 
                 Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), PlayerActivity.class);
+                startActivity(intent);
+
             }
         };
     }

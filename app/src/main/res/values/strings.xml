@@ -15,4 +15,7 @@
     <string name="pinky_name">Pinky</string>
     <string name="clyde_name">Clyde</string>
     <string name="start_button_title">Start!</string>
+    <string name="player_activity_stop_service">Stop</string>
+    <string name="player_service_notification_title">PacMacro Running</string>
+    <string name="player_service_notification_text">PacMacro location service is running in the background.</string>
 </resources>

@@ -42,7 +42,7 @@ public class SpectatorFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MapActivity.class);
+                Intent intent = new Intent(getContext(), SpectatorActivity.class);
                 startActivity(intent);
             }
         };
