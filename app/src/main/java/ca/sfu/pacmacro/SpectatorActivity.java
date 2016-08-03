@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.Controller.CharacterManager;
+import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
 
 public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -21,6 +22,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     private PacMacroClient mApiClient;
     private CharacterData mPlayer;
     private CharacterManager mCharacterManager;
+    private GameController mGameController;
 
     private int PERMISSION_RESPONSE_CODE = 0;
     private String TAG = "SpectatorActivity";
@@ -31,6 +33,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_map);
 
         mApiClient = new PacMacroClient();
+        mGameController = new GameController();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -52,11 +55,14 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mCharacterManager = new CharacterManager(mApiClient, new InitializeMarkerCallback() {
+        InitializeMarkerCallback markerCallback = new InitializeMarkerCallback() {
             @Override
             public Marker initializeMarker(LatLng latLng, String name) {
                 return mMap.addMarker(new MarkerOptions().position(latLng).title(name));
             }
-        });
+        };
+        mCharacterManager = new CharacterManager(mApiClient, markerCallback, mGameController);
+
+        mGameController.startLoop();
     }
 }

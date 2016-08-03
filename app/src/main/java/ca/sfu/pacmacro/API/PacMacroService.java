@@ -17,9 +17,11 @@ import retrofit2.http.POST;
 public interface PacMacroService {
     @Headers("Content-Type: application/json")
     @POST("ghost")
-    Call<Id> addGhost(@Body Map<String, Float> latlng);
+    Call<Id> addCharacter(@Body Map<String, Float> latlng);
 
     @GET("ghost/locations")
-    Call<List<CharacterData>> getGhosts();
+    Call<List<CharacterData>> getCharacters();
+
+    //TODO: add methods for fetching pellets
 
 }

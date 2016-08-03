@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
-import ca.sfu.pacmacro.API.events.GhostReceivedEvent;
+import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
+import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +43,7 @@ public class PacMacroClient {
         Map<String, Float> latlngMap = new HashMap<>();
         latlngMap.put(JsonProperties.PROPERTY_LATITUDE, latitude);
         latlngMap.put(JsonProperties.PROPERTY_LONGITUDE, longitude);
-        service.addGhost(latlngMap).enqueue(new Callback<Id>() {
+        service.addCharacter(latlngMap).enqueue(new Callback<Id>() {
             @Override
             public void onResponse(Response response) {
                 EventBus.getDefault().post(new CharacterSentEvent(CharacterSentEvent.RequestStatus.SUCCESS, response));
@@ -55,18 +56,23 @@ public class PacMacroClient {
         });
     }
 
-    public void getGhosts() {
-        Call<List<CharacterData>> getGhosts = service.getGhosts();
+    public void getCharacters() {
+        Call<List<CharacterData>> getCharacters = service.getCharacters();
 
-        getGhosts.enqueue(new Callback<List<CharacterData>>() {
+        getCharacters.enqueue(new Callback<List<CharacterData>>() {
             @Override
             public void onResponse(Response<List<CharacterData>> response) {
-                EventBus.getDefault().post(new GhostReceivedEvent(response.body()));
+                EventBus.getDefault().post(new CharacterReceivedEvent(response.body()));
             }
 
             @Override
             public void onFailure(Throwable t) {
             }
         });
+    }
+
+    public void getPellets() {
+        //TODO: get pellets from API
+        EventBus.getDefault().post(new PelletReceivedEvent());
     }
 }

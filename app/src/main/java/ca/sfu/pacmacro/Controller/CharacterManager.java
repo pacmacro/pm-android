@@ -10,12 +10,10 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
+import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
-import ca.sfu.pacmacro.API.events.GhostReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.Model.Character;
 
@@ -28,27 +26,26 @@ public class CharacterManager {
     private List<Character> mCharacterList = new ArrayList<>();
     private InitializeMarkerCallback mMapCallback;
 
-    public CharacterManager(PacMacroClient apiClient, InitializeMarkerCallback callback) {
+    public CharacterManager(PacMacroClient apiClient, InitializeMarkerCallback callback, GameController gameController) {
         this.mApiClient = apiClient;
         this.mMapCallback = callback;
 
         EventBus.getDefault().register(this);
 
         Log.d(TAG, "CharacterManager: Get ghosts request sent");
-        Timer timer = new Timer("FetchGhosts");
-        timer.scheduleAtFixedRate(new TimerTask() {
+        gameController.registerAction(new GameLoopAction() {
             @Override
-            public void run() {
-                mApiClient.getGhosts();
+            public void execute() {
+                mApiClient.getCharacters();
             }
-        }, 0, 500);
+        });
     }
 
     @Subscribe
     public void onCharacterSent(CharacterSentEvent event) {
         if (event.getStatus() == CharacterSentEvent.RequestStatus.SUCCESS) {
             Log.d(TAG, "Added character: " + event.getResponse().message());
-            mApiClient.getGhosts();
+            mApiClient.getCharacters();
         }
         else {
             Log.d(TAG, "Failed to add character");
@@ -56,26 +53,26 @@ public class CharacterManager {
     }
 
     @Subscribe
-    public void onGhostsReceived(GhostReceivedEvent event) {
+    public void onCharactersReceived(CharacterReceivedEvent event) {
         if (mCharacterList.isEmpty()) {
             for (CharacterData characterData: event.getCharacterDataList()) {
-                LatLng characterLocation = characterData.getLatLng();
+                LatLng characterLocation = characterData.getLocation();
                 // TODO: properly input character types
                 Marker marker = mMapCallback.initializeMarker(characterLocation, "Character");
                 Character character = new Character(characterData.getId().getIdAsInt(),
                         Character.CharacterType.PACMAN, marker);
-                Log.d(TAG, "onGhostsReceived: Character added at " + characterLocation);
+                Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
                 mCharacterList.add(character);
             }
         }
         else {
             for (CharacterData characterData : event.getCharacterDataList()) {
-                LatLng characterLocation = characterData.getLatLng();
+                LatLng characterLocation = characterData.getLocation();
                 int id = characterData.getId().getIdAsInt();
                 Character character = findCharacterById(id);
                 if (character != null) {
                     character.updateLocation(characterLocation);
-                    Log.d(TAG, "onGhostsReceived: Character updated at " + characterLocation);
+                    Log.d(TAG, "onCharactersReceived: Character updated at " + characterLocation);
                 }
             }
         }

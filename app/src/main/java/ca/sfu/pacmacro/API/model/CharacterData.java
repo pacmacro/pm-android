@@ -18,7 +18,7 @@ public class CharacterData {
         this.location = location;
     }
 
-    public LatLng getLatLng() {
+    public LatLng getLocation() {
         return location;
     }
 
