@@ -15,4 +15,10 @@
         android:id="@+id/player_stop_service"
         android:text="@string/player_activity_stop_service"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/player_tag"
+        android:text="@string/player_activity_tag"/>
+
 </LinearLayout>

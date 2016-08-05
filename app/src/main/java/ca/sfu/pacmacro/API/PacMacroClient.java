@@ -11,9 +11,13 @@ import java.util.Map;
 
 import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
+import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
+import ca.sfu.pacmacro.API.events.CharacterStateSentEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.API.model.Id;
+import ca.sfu.pacmacro.Model.Character;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -74,5 +78,37 @@ public class PacMacroClient {
     public void getPellets() {
         //TODO: get pellets from API
         EventBus.getDefault().post(new PelletReceivedEvent());
+    }
+
+    public void updateCharacterState(int id, Character.CharacterState characterState) {
+        Call<Id> updateCharacterState = service.updateCharacterState(id);
+
+        updateCharacterState.enqueue(new Callback<Id>() {
+            @Override
+            public void onResponse(Response<Id> response) {
+                EventBus.getDefault().post(new CharacterStateSentEvent());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    public void getCharacterStates() {
+        Call<List<CharacterStateData>> getCharacterStates = service.getCharacterStates();
+
+        getCharacterStates.enqueue(new Callback<List<CharacterStateData>>() {
+            @Override
+            public void onResponse(Response<List<CharacterStateData>> response) {
+                EventBus.getDefault().post(new CharacterStateReceivedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }

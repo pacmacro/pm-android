@@ -14,7 +14,9 @@ import java.util.List;
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
+import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.Model.Character;
 
 /**
@@ -26,17 +28,28 @@ public class CharacterManager {
     private List<Character> mCharacterList = new ArrayList<>();
     private InitializeMarkerCallback mMapCallback;
 
+    public CharacterManager(PacMacroClient apiClient, GameController gameController) {
+        this(apiClient, new InitializeMarkerCallback() {
+            @Override
+            public Marker initializeMarker(LatLng latLng, String name) {
+                return null;
+            }
+        }, gameController);
+    }
+
     public CharacterManager(PacMacroClient apiClient, InitializeMarkerCallback callback, GameController gameController) {
         this.mApiClient = apiClient;
         this.mMapCallback = callback;
 
         EventBus.getDefault().register(this);
 
-        Log.d(TAG, "CharacterManager: Get ghosts request sent");
         gameController.registerAction(new GameLoopAction() {
             @Override
             public void execute() {
                 mApiClient.getCharacters();
+                Log.d(TAG, "CharacterManager: Get characters request sent");
+                mApiClient.getCharacterStates();
+                Log.d(TAG, "CharacterManager: Get character states request sent");
             }
         });
     }
@@ -78,12 +91,32 @@ public class CharacterManager {
         }
     }
 
-    private Character findCharacterById(int id) {
+    @Subscribe
+    public void onCharacterStateReceived(CharacterStateReceivedEvent event) {
+        for (CharacterStateData characterStateData: event.getCharacterStateDataList()) {
+            Character.CharacterState characterState = characterStateData.getState();
+            Character character = findCharacterById(characterStateData.getId());
+            if (character != null) {
+                character.updateState(characterState);
+                Log.d(TAG, "onCharacterStateReceived: Character state updated to " + characterState);
+            }
+        }
+    }
+
+    public Character findCharacterById(int id) {
         for (Character character: mCharacterList) {
             if (character.getId() == id) {
                 return character;
             }
         }
         return null;
+    }
+
+    public Character[] getCharacters() {
+        return new Character[] {new Character(0, Character.CharacterType.PACMAN, null),
+                                new Character(0, Character.CharacterType.INKY, null),
+                                new Character(0, Character.CharacterType.BLINKY, null),
+                                new Character(0, Character.CharacterType.PINKY, null),
+                                new Character(0, Character.CharacterType.CLYDE, null)};
     }
 }

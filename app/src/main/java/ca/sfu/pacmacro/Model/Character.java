@@ -10,14 +10,35 @@ public class Character {
     private int id;
     private Marker marker;
     private CharacterType characterType;
+    private CharacterState characterState;
 
     public enum CharacterType{
-        PACMAN,
-        INKY,
-        BLINKY,
-        PINKY,
-        CLYDE
+        PACMAN("Pacman"),
+        INKY("Inky"),
+        BLINKY("Blinky"),
+        PINKY("Pinky"),
+        CLYDE("Clyde");
+
+        String name;
+
+        CharacterType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
+
+    public enum CharacterState{
+        UNINITIALIZED,
+        READY,
+        ACTIVE,
+        CAPTURED,
+        POWERUP
+    }
+
     public Character(int id, CharacterType characterType, Marker marker) {
         this.id = id;
         this.characterType = characterType;
@@ -33,7 +54,21 @@ public class Character {
     }
 
     public void updateLocation(LatLng characterLocation) {
-        marker.setPosition(characterLocation);
+        if (marker != null) {
+            marker.setPosition(characterLocation);
+        }
     }
 
+    public void updateState(CharacterState characterState) {
+        this.characterState = characterState;
+    }
+
+    @Override
+    public String toString() {
+        return characterType.toString();
+    }
+
+    public CharacterState getState() {
+        return characterState;
+    }
 }

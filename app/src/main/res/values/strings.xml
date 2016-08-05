@@ -18,4 +18,6 @@
     <string name="player_activity_stop_service">Stop</string>
     <string name="player_service_notification_title">PacMacro Running</string>
     <string name="player_service_notification_text">PacMacro location service is running in the background.</string>
+    <string name="player_activity_tag">Tag Player</string>
+    <string name="player_tag_select">Select a character</string>
 </resources>
