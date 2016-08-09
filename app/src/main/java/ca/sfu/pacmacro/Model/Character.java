@@ -7,7 +7,6 @@ import com.google.android.gms.maps.model.Marker;
  * Data structure containing a character's information and position
  */
 public class Character {
-    private int id;
     private Marker marker;
     private CharacterType characterType;
     private CharacterState characterState;
@@ -39,14 +38,9 @@ public class Character {
         POWERUP
     }
 
-    public Character(int id, CharacterType characterType, Marker marker) {
-        this.id = id;
+    public Character(CharacterType characterType, Marker marker) {
         this.characterType = characterType;
         this.marker = marker;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public boolean isPacman() {
@@ -70,5 +64,9 @@ public class Character {
 
     public CharacterState getState() {
         return characterState;
+    }
+
+    public CharacterType getType() {
+        return characterType;
     }
 }

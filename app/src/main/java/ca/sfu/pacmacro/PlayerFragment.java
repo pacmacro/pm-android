@@ -14,7 +14,6 @@ import android.widget.Toast;
 import ca.sfu.pacmacro.Model.Character;
 
 
-
 public class PlayerFragment extends Fragment {
 
 //    private OnFragmentInteractionListener mListener;

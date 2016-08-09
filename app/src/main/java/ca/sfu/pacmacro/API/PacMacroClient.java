@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
+import ca.sfu.pacmacro.API.events.CharacterLocationReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateSentEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
-import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterLocationData;
 import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.API.model.Id;
 import ca.sfu.pacmacro.Model.Character;
@@ -33,7 +33,7 @@ public class PacMacroClient {
 
     public PacMacroClient() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(CharacterData.class, new CharacterDeserializer())
+                .registerTypeAdapter(CharacterLocationData.class, new CharacterDeserializer())
                 .create();
         this.retrofit = new Retrofit.Builder()
                 .baseUrl("http://pacmacro.herokuapp.com/")
@@ -61,12 +61,12 @@ public class PacMacroClient {
     }
 
     public void getCharacters() {
-        Call<List<CharacterData>> getCharacters = service.getCharacters();
+        Call<List<CharacterLocationData>> getCharacters = service.getCharacters();
 
-        getCharacters.enqueue(new Callback<List<CharacterData>>() {
+        getCharacters.enqueue(new Callback<List<CharacterLocationData>>() {
             @Override
-            public void onResponse(Response<List<CharacterData>> response) {
-                EventBus.getDefault().post(new CharacterReceivedEvent(response.body()));
+            public void onResponse(Response<List<CharacterLocationData>> response) {
+                EventBus.getDefault().post(new CharacterLocationReceivedEvent(response.body()));
             }
 
             @Override

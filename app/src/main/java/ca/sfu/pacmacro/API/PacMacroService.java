@@ -3,7 +3,7 @@ package ca.sfu.pacmacro.API;
 import java.util.List;
 import java.util.Map;
 
-import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterLocationData;
 import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.API.model.Id;
 import retrofit2.Call;
@@ -22,14 +22,17 @@ public interface PacMacroService {
     Call<Id> addCharacter(@Body Map<String, Float> latlng);
 
     @GET("ghost/locations")
-    Call<List<CharacterData>> getCharacters();
+    Call<List<CharacterLocationData>> getCharacters();
+
+    @GET("players/locations")
+    Call<List<CharacterLocationData>> getCharacterLocations();
 
     //TODO: add methods for fetching pellets
 
     @POST("ghost/{id}/state")
     Call<Id> updateCharacterState(@Path("id") int id);
 
-    @GET("ghost/states")
+    @GET("players/states")
     Call<List<CharacterStateData>> getCharacterStates();
 
 }

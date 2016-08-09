@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
-import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterLocationData;
 import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
@@ -20,7 +20,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
     private GoogleMap mMap;
     private PacMacroClient mApiClient;
-    private CharacterData mPlayer;
+    private CharacterLocationData mPlayer;
     private CharacterManager mCharacterManager;
     private GameController mGameController;
 

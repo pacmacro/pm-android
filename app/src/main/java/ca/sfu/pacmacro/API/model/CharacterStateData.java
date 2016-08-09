@@ -1,42 +1,21 @@
 package ca.sfu.pacmacro.API.model;
 
-import android.util.Log;
-
 import ca.sfu.pacmacro.Model.Character;
 
 /**
  * Created by AlexLand on 2016-08-04.
  */
 public class CharacterStateData {
-    int id;
+    Character.CharacterType type;
     Character.CharacterState state;
 
-    public CharacterStateData(int id, String stateString) {
-        this.id = id;
-
-        switch(stateString) {
-            case "UNINITIALIZED":
-                this.state = Character.CharacterState.UNINITIALIZED;
-                break;
-            case "READY":
-                this.state = Character.CharacterState.READY;
-                break;
-            case "ACTIVE":
-                this.state = Character.CharacterState.ACTIVE;
-                break;
-            case "CAPTURED":
-                this.state = Character.CharacterState.CAPTURED;
-                break;
-            case "POWERUP":
-                this.state = Character.CharacterState.POWERUP;
-                break;
-            default:
-                Log.wtf("CharacterStateData", "Character state unknown: " + stateString);
-        }
+    public CharacterStateData(String name, String stateString) {
+        this.type = Character.CharacterType.valueOf(name.toUpperCase());
+        this.state = Character.CharacterState.valueOf(stateString.toUpperCase());
     }
 
-    public int getId() {
-        return id;
+    public Character.CharacterType getType() {
+        return type;
     }
 
     public Character.CharacterState getState() {

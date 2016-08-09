@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
-import ca.sfu.pacmacro.API.events.CharacterReceivedEvent;
+import ca.sfu.pacmacro.API.events.CharacterLocationReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
-import ca.sfu.pacmacro.API.model.CharacterData;
+import ca.sfu.pacmacro.API.model.CharacterLocationData;
 import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.Model.Character;
 
@@ -66,33 +66,27 @@ public class CharacterManager {
     }
 
     @Subscribe
-    public void onCharactersReceived(CharacterReceivedEvent event) {
-        if (mCharacterList.isEmpty()) {
-            if (event.getCharacterDataList() != null) {
-                for (CharacterData characterData : event.getCharacterDataList()) {
-                    LatLng characterLocation = characterData.getLocation();
-                    // TODO: properly input character types
-                    Marker marker = mMapCallback.initializeMarker(characterLocation, "Character");
-                    Character character = new Character(characterData.getId().getIdAsInt(),
-                            Character.CharacterType.PACMAN, marker);
-                    Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
+    public void onCharactersLocationReceived(CharacterLocationReceivedEvent event) {
+        if (event.getCharacterLocationDataList() != null) {
+            for (CharacterLocationData characterLocationData : event.getCharacterLocationDataList()) {
+                LatLng characterLocation = characterLocationData.getLocation();
+                Character.CharacterType characterType = characterLocationData.getType();
+                // TODO: properly input character types
+                Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString());
+                Character character = getCharacterByType(characterType);
+                if (character == null) {
+                    character = new Character(characterType, marker);
                     mCharacterList.add(character);
+                    Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
                 }
-            }
-            else {
-                Log.d(TAG, "onCharactersReceived: No characters received.");
-            }
-        }
-        else {
-            for (CharacterData characterData : event.getCharacterDataList()) {
-                LatLng characterLocation = characterData.getLocation();
-                int id = characterData.getId().getIdAsInt();
-                Character character = findCharacterById(id);
-                if (character != null) {
+                else {
                     character.updateLocation(characterLocation);
                     Log.d(TAG, "onCharactersReceived: Character updated at " + characterLocation);
                 }
             }
+        }
+        else {
+            Log.d(TAG, "onCharactersReceived: No characters received.");
         }
     }
 
@@ -101,7 +95,7 @@ public class CharacterManager {
         if (event.getCharacterStateDataList() != null) {
             for (CharacterStateData characterStateData : event.getCharacterStateDataList()) {
                 Character.CharacterState characterState = characterStateData.getState();
-                Character character = findCharacterById(characterStateData.getId());
+                Character character = getCharacterByType(characterStateData.getType());
                 if (character != null) {
                     character.updateState(characterState);
                     Log.d(TAG, "onCharacterStateReceived: Character state updated to " + characterState);
@@ -113,9 +107,9 @@ public class CharacterManager {
         }
     }
 
-    public Character findCharacterById(int id) {
-        for (Character character: mCharacterList) {
-            if (character.getId() == id) {
+    public Character getCharacterByType(Character.CharacterType type) {
+        for (Character character : mCharacterList) {
+            if (character.getType() == type) {
                 return character;
             }
         }
@@ -123,10 +117,10 @@ public class CharacterManager {
     }
 
     public Character[] getCharacters() {
-        return new Character[] {new Character(0, Character.CharacterType.PACMAN, null),
-                                new Character(0, Character.CharacterType.INKY, null),
-                                new Character(0, Character.CharacterType.BLINKY, null),
-                                new Character(0, Character.CharacterType.PINKY, null),
-                                new Character(0, Character.CharacterType.CLYDE, null)};
+        return new Character[] {new Character(Character.CharacterType.PACMAN, null),
+                                new Character(Character.CharacterType.INKY, null),
+                                new Character(Character.CharacterType.BLINKY, null),
+                                new Character(Character.CharacterType.PINKY, null),
+                                new Character(Character.CharacterType.CLYDE, null)};
     }
 }
