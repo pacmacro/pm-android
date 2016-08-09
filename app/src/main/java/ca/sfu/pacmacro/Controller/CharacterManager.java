@@ -68,14 +68,19 @@ public class CharacterManager {
     @Subscribe
     public void onCharactersReceived(CharacterReceivedEvent event) {
         if (mCharacterList.isEmpty()) {
-            for (CharacterData characterData: event.getCharacterDataList()) {
-                LatLng characterLocation = characterData.getLocation();
-                // TODO: properly input character types
-                Marker marker = mMapCallback.initializeMarker(characterLocation, "Character");
-                Character character = new Character(characterData.getId().getIdAsInt(),
-                        Character.CharacterType.PACMAN, marker);
-                Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
-                mCharacterList.add(character);
+            if (event.getCharacterDataList() != null) {
+                for (CharacterData characterData : event.getCharacterDataList()) {
+                    LatLng characterLocation = characterData.getLocation();
+                    // TODO: properly input character types
+                    Marker marker = mMapCallback.initializeMarker(characterLocation, "Character");
+                    Character character = new Character(characterData.getId().getIdAsInt(),
+                            Character.CharacterType.PACMAN, marker);
+                    Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
+                    mCharacterList.add(character);
+                }
+            }
+            else {
+                Log.d(TAG, "onCharactersReceived: No characters received.");
             }
         }
         else {
@@ -93,13 +98,18 @@ public class CharacterManager {
 
     @Subscribe
     public void onCharacterStateReceived(CharacterStateReceivedEvent event) {
-        for (CharacterStateData characterStateData: event.getCharacterStateDataList()) {
-            Character.CharacterState characterState = characterStateData.getState();
-            Character character = findCharacterById(characterStateData.getId());
-            if (character != null) {
-                character.updateState(characterState);
-                Log.d(TAG, "onCharacterStateReceived: Character state updated to " + characterState);
+        if (event.getCharacterStateDataList() != null) {
+            for (CharacterStateData characterStateData : event.getCharacterStateDataList()) {
+                Character.CharacterState characterState = characterStateData.getState();
+                Character character = findCharacterById(characterStateData.getId());
+                if (character != null) {
+                    character.updateState(characterState);
+                    Log.d(TAG, "onCharacterStateReceived: Character state updated to " + characterState);
+                }
             }
+        }
+        else {
+            Log.d(TAG, "onCharacterStateReceived: No character states received.");
         }
     }
 

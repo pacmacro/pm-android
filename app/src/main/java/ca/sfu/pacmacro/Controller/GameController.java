@@ -34,4 +34,8 @@ public class GameController {
             }
         }, TIMER_DELAY, TIMER_PERIOD);
     }
+
+    public void stopLoop() {
+        this.timer.cancel();
+    }
 }

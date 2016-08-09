@@ -52,6 +52,7 @@ public class PlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(PlayerActivity.this, PlayerService.class);
                     stopService(intent);
+                    finish();
                 }
             });
         }
@@ -63,24 +64,19 @@ public class PlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     final Character[] characters = mCharacterManager.getCharacters();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this, R.style.YourAlertDialogTheme);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
                     builder.setTitle(getString(R.string.player_tag_select));
+
                     ArrayAdapter<Character> characterArrayAdapter = new ArrayAdapter<Character>(getApplicationContext(),
-                                    android.R.layout.select_dialog_item, characters);
-                    builder.setSingleChoiceItems(characterArrayAdapter, 0, new DialogInterface.OnClickListener() {
+                                    R.layout.select_dialog_singlechoice, characters);
+                    builder.setAdapter(characterArrayAdapter, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             Character character = characters[item];
                             Log.d("TagButton", "Character selected: " + character);
                             dialog.dismiss();
                         }
                     });
-//                    builder.setAdapter(characterArrayAdapter, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int item) {
-//                            Character character = characters[item];
-//                            Log.d("TagButton", "Character selected: " + character);
-//                            dialog.dismiss();
-//                        }
-//                    });
+
                     Dialog characterSelectDialog = builder.create();
                     characterSelectDialog.show();
                 }
@@ -119,5 +115,9 @@ public class PlayerActivity extends AppCompatActivity {
         mApiClient.updateCharacterState(characterId, characterState);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGameController.stopLoop();
+    }
 }
