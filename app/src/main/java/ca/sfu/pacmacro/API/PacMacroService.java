@@ -8,6 +8,7 @@ import ca.sfu.pacmacro.API.model.CharacterStateData;
 import ca.sfu.pacmacro.API.model.Id;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -25,18 +26,27 @@ public interface PacMacroService {
     @GET("ghost/locations")
     Call<List<CharacterLocationData>> getCharacters();
 
-    @GET("players/locations")
+    @GET("player/locations")
     Call<List<CharacterLocationData>> getCharacterLocations();
 
-    @PUT("/player/{type}/location")
+    @Headers("Content-Type: application/json")
+    @PUT("player/{type}/location")
     Call<String> setCharacterLocation(@Path("type") String type, @Body Map<String, Double> latlng);
 
     //TODO: add methods for fetching pellets
 
-    @POST("ghost/{id}/state")
-    Call<Id> updateCharacterState(@Path("id") int id);
+    @Headers("Content-Type: application/json")
+    @POST("player/{type}")
+    Call<String> selectCharacter(@Path("type") String type, @Body Map<String, Double> latlng);
 
-    @GET("players/states")
+    @DELETE("player/{type}")
+    Call<String> deselectCharacter(@Path("type") String type);
+
+    @Headers("Content-Type: application/json")
+    @PUT("player/{type}/state")
+    Call<String> updateCharacterState(@Path("type") String type, @Body String state);
+
+    @GET("player/states")
     Call<List<CharacterStateData>> getCharacterStates();
 
 }

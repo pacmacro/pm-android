@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +26,7 @@ public class PlayerActivity extends AppCompatActivity {
     private GameController mGameController;
 
     private Character.CharacterType mSelectedCharacterType;
+    private Character mSelectedCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,9 @@ public class PlayerActivity extends AppCompatActivity {
         mGameController = new GameController();
         mApiClient = new PacMacroClient();
         mCharacterManager = new CharacterManager(mApiClient, mGameController);
+
+        mApiClient.selectCharacter(mSelectedCharacterType, 0, 0);
+        //TODO: set mSelectedCharacter state
 
         mGameController.startLoop();
 
@@ -76,7 +79,7 @@ public class PlayerActivity extends AppCompatActivity {
                     builder.setAdapter(characterArrayAdapter, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             Character character = characters[item];
-                            Log.d("TagButton", "Character selected: " + character);
+                            sendTagRequest(character);
                             dialog.dismiss();
                         }
                     });
@@ -115,14 +118,15 @@ public class PlayerActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    private void sendTagRequest(int characterId) {
+    private void sendTagRequest(Character character) {
         Character.CharacterState characterState = Character.CharacterState.CAPTURED;
-        mApiClient.updateCharacterState(characterId, characterState);
+        mApiClient.updateCharacterState(character.getType(), characterState);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mGameController.stopLoop();
+        mApiClient.deselectCharacter(mSelectedCharacterType);
     }
 }

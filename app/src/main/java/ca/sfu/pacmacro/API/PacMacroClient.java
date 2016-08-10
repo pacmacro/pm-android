@@ -1,5 +1,7 @@
 package ca.sfu.pacmacro.API;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,6 +30,8 @@ import retrofit2.Retrofit;
  * Retrofit API client for the PacMacro server API
  */
 public class PacMacroClient {
+    private static final String TAG = "PacMacroClient";
+
     private Retrofit retrofit;
     private PacMacroService service;
 
@@ -61,9 +65,9 @@ public class PacMacroClient {
     }
 
     public void getCharacters() {
-        Call<List<CharacterLocationData>> getCharacters = service.getCharacters();
+        Call<List<CharacterLocationData>> getCharacterLocations = service.getCharacterLocations();
 
-        getCharacters.enqueue(new Callback<List<CharacterLocationData>>() {
+        getCharacterLocations.enqueue(new Callback<List<CharacterLocationData>>() {
             @Override
             public void onResponse(Response<List<CharacterLocationData>> response) {
                 EventBus.getDefault().post(new CharacterLocationReceivedEvent(response.body()));
@@ -82,12 +86,12 @@ public class PacMacroClient {
         service.setCharacterLocation(characterType.toString(), latlngMap).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Response<String> response) {
-
+                Log.d(TAG, "Set location success");
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                Log.d(TAG, "Set location failed");
             }
         });
     }
@@ -97,18 +101,18 @@ public class PacMacroClient {
         EventBus.getDefault().post(new PelletReceivedEvent());
     }
 
-    public void updateCharacterState(int id, Character.CharacterState characterState) {
-        Call<Id> updateCharacterState = service.updateCharacterState(id);
+    public void updateCharacterState(Character.CharacterType characterType, Character.CharacterState characterState) {
+        Call<String> updateCharacterState = service.updateCharacterState(characterType.toString(), characterState.toString());
 
-        updateCharacterState.enqueue(new Callback<Id>() {
+        updateCharacterState.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Response<Id> response) {
+            public void onResponse(Response<String> response) {
                 EventBus.getDefault().post(new CharacterStateSentEvent());
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                Log.d(TAG, "Update character state failed: " + t.getMessage());
             }
         });
     }
@@ -125,6 +129,39 @@ public class PacMacroClient {
             @Override
             public void onFailure(Throwable t) {
 
+            }
+        });
+    }
+
+    public void selectCharacter(final Character.CharacterType characterType, double latitude, double longitude) {
+        Map<String, Double> latlngMap = new HashMap<>();
+        latlngMap.put(JsonProperties.PROPERTY_LATITUDE, latitude);
+        latlngMap.put(JsonProperties.PROPERTY_LONGITUDE, longitude);
+        Call<String> selectCharacter = service.selectCharacter(characterType.toString(), latlngMap);
+        selectCharacter.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Response<String> response) {
+                Log.d(TAG, "Successfully selected character: " + characterType);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d(TAG, "Failed to select character: " + characterType);
+            }
+        });
+    }
+
+    public void deselectCharacter(final Character.CharacterType characterType) {
+        Call<String> deselectCharacter = service.deselectCharacter(characterType.toString());
+        deselectCharacter.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Response<String> response) {
+                Log.d(TAG, "Successfully deselected character: " + characterType);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d(TAG, "Failed to deselect character: " + characterType);
             }
         });
     }
