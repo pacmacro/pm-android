@@ -11,13 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.sfu.pacmacro.API.events.CharacterLocationReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
-import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateSentEvent;
+import ca.sfu.pacmacro.API.events.CharactersReceivedEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
-import ca.sfu.pacmacro.API.model.CharacterLocationData;
-import ca.sfu.pacmacro.API.model.CharacterStateData;
+import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
 import ca.sfu.pacmacro.Model.Character;
 import retrofit2.Call;
@@ -37,7 +35,7 @@ public class PacMacroClient {
 
     public PacMacroClient() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(CharacterLocationData.class, new CharacterDeserializer())
+                .registerTypeAdapter(CharacterData.class, new CharacterDeserializer())
                 .create();
         this.retrofit = new Retrofit.Builder()
                 .baseUrl("http://pacmacro.herokuapp.com/")
@@ -65,12 +63,12 @@ public class PacMacroClient {
     }
 
     public void getCharacters() {
-        Call<List<CharacterLocationData>> getCharacterLocations = service.getCharacterLocations();
+        Call<List<CharacterData>> getCharacterDetails = service.getCharacterDetails();
 
-        getCharacterLocations.enqueue(new Callback<List<CharacterLocationData>>() {
+        getCharacterDetails.enqueue(new Callback<List<CharacterData>>() {
             @Override
-            public void onResponse(Response<List<CharacterLocationData>> response) {
-                EventBus.getDefault().post(new CharacterLocationReceivedEvent(response.body()));
+            public void onResponse(Response<List<CharacterData>> response) {
+                EventBus.getDefault().post(new CharactersReceivedEvent(response.body()));
             }
 
             @Override
@@ -113,22 +111,6 @@ public class PacMacroClient {
             @Override
             public void onFailure(Throwable t) {
                 Log.d(TAG, "Update character state failed: " + t.getMessage());
-            }
-        });
-    }
-
-    public void getCharacterStates() {
-        Call<List<CharacterStateData>> getCharacterStates = service.getCharacterStates();
-
-        getCharacterStates.enqueue(new Callback<List<CharacterStateData>>() {
-            @Override
-            public void onResponse(Response<List<CharacterStateData>> response) {
-                EventBus.getDefault().post(new CharacterStateReceivedEvent(response.body()));
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
             }
         });
     }

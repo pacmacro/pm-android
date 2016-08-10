@@ -38,8 +38,9 @@ public class Character {
         POWERUP
     }
 
-    public Character(CharacterType characterType, Marker marker) {
+    public Character(CharacterType characterType, CharacterState characterState, Marker marker) {
         this.characterType = characterType;
+        this.characterState = characterState;
         this.marker = marker;
     }
 

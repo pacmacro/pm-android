@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
-import ca.sfu.pacmacro.API.events.CharacterLocationReceivedEvent;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
-import ca.sfu.pacmacro.API.events.CharacterStateReceivedEvent;
-import ca.sfu.pacmacro.API.model.CharacterLocationData;
-import ca.sfu.pacmacro.API.model.CharacterStateData;
+import ca.sfu.pacmacro.API.events.CharactersReceivedEvent;
+import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.Model.Character;
 
 /**
@@ -47,9 +45,7 @@ public class CharacterManager {
             @Override
             public void execute() {
                 mApiClient.getCharacters();
-                Log.d(TAG, "CharacterManager: Get characters request sent");
-                mApiClient.getCharacterStates();
-                Log.d(TAG, "CharacterManager: Get character states request sent");
+                Log.d(TAG, "Get characters request sent");
             }
         });
     }
@@ -66,44 +62,36 @@ public class CharacterManager {
     }
 
     @Subscribe
-    public void onCharactersLocationReceived(CharacterLocationReceivedEvent event) {
-        if (event.getCharacterLocationDataList() != null) {
-            for (CharacterLocationData characterLocationData : event.getCharacterLocationDataList()) {
-                LatLng characterLocation = characterLocationData.getLocation();
-                Character.CharacterType characterType = characterLocationData.getType();
-                // TODO: properly input character types
-                Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString());
+    public void onCharactersReceived(CharactersReceivedEvent event) {
+        if (event.getCharacterDataList() != null) {
+            for (CharacterData characterData : event.getCharacterDataList()) {
+
+                Character.CharacterType characterType = characterData.getType();
+                Character.CharacterState characterState = characterData.getState();
+                LatLng characterLocation = characterData.getLocation();
+
                 Character character = getCharacterByType(characterType);
                 if (character == null) {
-                    character = new Character(characterType, marker);
+                    Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString());
+                    character = new Character(characterType, characterState, marker);
                     mCharacterList.add(character);
-                    Log.d(TAG, "onCharactersReceived: Character " + characterType + " added at " + characterLocation);
+                    Log.d(TAG, "Character added: \n" +
+                            "Type: " + characterType + ", " +
+                            "Location: " + characterLocation + ", " +
+                            "State: " + characterState);
                 }
                 else {
                     character.updateLocation(characterLocation);
-                    Log.d(TAG, "onCharactersReceived: Character " + characterType + " updated at " + characterLocation);
-                }
-            }
-        }
-        else {
-            Log.d(TAG, "onCharactersReceived: No characters received.");
-        }
-    }
-
-    @Subscribe
-    public void onCharacterStateReceived(CharacterStateReceivedEvent event) {
-        if (event.getCharacterStateDataList() != null) {
-            for (CharacterStateData characterStateData : event.getCharacterStateDataList()) {
-                Character.CharacterState characterState = characterStateData.getState();
-                Character character = getCharacterByType(characterStateData.getType());
-                if (character != null) {
                     character.updateState(characterState);
-                    Log.d(TAG, "onCharacterStateReceived: Character state updated to " + characterState);
+                    Log.d(TAG, "Character updated: \n" +
+                            "Type: " + characterType + ", " +
+                            "Location: " + characterLocation + ", " +
+                            "State: " + characterState);
                 }
             }
         }
         else {
-            Log.d(TAG, "onCharacterStateReceived: No character states received.");
+            Log.d(TAG, "No characters received.");
         }
     }
 
@@ -117,10 +105,11 @@ public class CharacterManager {
     }
 
     public Character[] getCharacters() {
-        return new Character[] {new Character(Character.CharacterType.PACMAN, null),
-                                new Character(Character.CharacterType.INKY, null),
-                                new Character(Character.CharacterType.BLINKY, null),
-                                new Character(Character.CharacterType.PINKY, null),
-                                new Character(Character.CharacterType.CLYDE, null)};
+        return (Character[]) mCharacterList.toArray();
+//        return new Character[] {new Character(Character.CharacterType.PACMAN, null),
+//                                new Character(Character.CharacterType.INKY, null),
+//                                new Character(Character.CharacterType.BLINKY, null),
+//                                new Character(Character.CharacterType.PINKY, null),
+//                                new Character(Character.CharacterType.CLYDE, null)};
     }
 }

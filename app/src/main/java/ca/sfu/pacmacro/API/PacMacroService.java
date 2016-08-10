@@ -3,8 +3,7 @@ package ca.sfu.pacmacro.API;
 import java.util.List;
 import java.util.Map;
 
-import ca.sfu.pacmacro.API.model.CharacterLocationData;
-import ca.sfu.pacmacro.API.model.CharacterStateData;
+import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,12 +22,6 @@ public interface PacMacroService {
     @POST("ghost")
     Call<Id> addCharacter(@Body Map<String, Float> latlng);
 
-    @GET("ghost/locations")
-    Call<List<CharacterLocationData>> getCharacters();
-
-    @GET("player/locations")
-    Call<List<CharacterLocationData>> getCharacterLocations();
-
     @Headers("Content-Type: application/json")
     @PUT("player/{type}/location")
     Call<String> setCharacterLocation(@Path("type") String type, @Body Map<String, Double> latlng);
@@ -46,7 +39,7 @@ public interface PacMacroService {
     @PUT("player/{type}/state")
     Call<String> updateCharacterState(@Path("type") String type, @Body String state);
 
-    @GET("player/states")
-    Call<List<CharacterStateData>> getCharacterStates();
+    @GET("player/details")
+    Call<List<CharacterData>> getCharacterDetails();
 
 }
