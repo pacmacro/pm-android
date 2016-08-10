@@ -75,6 +75,23 @@ public class PacMacroClient {
         });
     }
 
+    public void setCharacterLocation(Character.CharacterType characterType, double latitude, double longitude) {
+        Map<String, Double> latlngMap = new HashMap<>();
+        latlngMap.put(JsonProperties.PROPERTY_LATITUDE, latitude);
+        latlngMap.put(JsonProperties.PROPERTY_LONGITUDE, longitude);
+        service.setCharacterLocation(characterType.toString(), latlngMap).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
     public void getPellets() {
         //TODO: get pellets from API
         EventBus.getDefault().post(new PelletReceivedEvent());

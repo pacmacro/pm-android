@@ -15,10 +15,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
+import ca.sfu.pacmacro.Model.Character;
 
 public class PlayerService extends Service {
     public final static int NOTIFICATION_ID = 1;
 
+    private Character.CharacterType mSelectedCharacterType;
     private PacMacroClient mApiClient = new PacMacroClient();
     private static final String TAG = "PLAYER_SERVICE";
     NotificationManager mNotificationManager;
@@ -53,7 +55,9 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        int returnValue = super.onStartCommand(intent, flags, startId);
+        mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
+        return returnValue;
     }
 
     @Override
@@ -95,7 +99,7 @@ public class PlayerService extends Service {
     }
 
     private void updateLocation(Location location) {
-        //pacMacroClient.doSomething()
+        mApiClient.setCharacterLocation(mSelectedCharacterType, location.getLatitude(), location.getLongitude());
         Toast.makeText(PlayerService.this, "Location Updated", Toast.LENGTH_SHORT).show();
     }
 

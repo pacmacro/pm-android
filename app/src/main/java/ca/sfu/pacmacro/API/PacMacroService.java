@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -26,6 +27,9 @@ public interface PacMacroService {
 
     @GET("players/locations")
     Call<List<CharacterLocationData>> getCharacterLocations();
+
+    @PUT("/player/{type}/location")
+    Call<String> setCharacterLocation(@Path("type") String type, @Body Map<String, Double> latlng);
 
     //TODO: add methods for fetching pellets
 

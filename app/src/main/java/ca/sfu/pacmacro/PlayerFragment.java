@@ -71,6 +71,7 @@ public class PlayerFragment extends Fragment {
 
                 Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), PlayerActivity.class);
+                intent.putExtra("Character", selectedCharacter);
                 startActivity(intent);
 
             }

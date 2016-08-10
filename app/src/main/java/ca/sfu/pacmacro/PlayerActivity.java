@@ -26,10 +26,14 @@ public class PlayerActivity extends AppCompatActivity {
     private CharacterManager mCharacterManager;
     private GameController mGameController;
 
+    private Character.CharacterType mSelectedCharacterType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        mSelectedCharacterType = (Character.CharacterType) getIntent().getExtras().get("Character");
 
         mGameController = new GameController();
         mApiClient = new PacMacroClient();
@@ -42,7 +46,7 @@ public class PlayerActivity extends AppCompatActivity {
                     android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_RESPONSE_CODE);
         }
         else {
-            startLocationService();
+            startLocationService(mSelectedCharacterType);
         }
 
         Button stopButton = (Button) findViewById(R.id.player_stop_service);
@@ -92,7 +96,7 @@ public class PlayerActivity extends AppCompatActivity {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startLocationService();
+                startLocationService(mSelectedCharacterType);
             } else {
 
                 // permission denied, boo! Disable the
@@ -105,8 +109,9 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-    private void startLocationService() {
+    private void startLocationService(Character.CharacterType characterType) {
         Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+        intent.putExtra("Character", characterType);
         startService(intent);
     }
 
