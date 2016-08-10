@@ -77,11 +77,11 @@ public class CharacterManager {
                 if (character == null) {
                     character = new Character(characterType, marker);
                     mCharacterList.add(character);
-                    Log.d(TAG, "onCharactersReceived: Character added at " + characterLocation);
+                    Log.d(TAG, "onCharactersReceived: Character " + characterType + " added at " + characterLocation);
                 }
                 else {
                     character.updateLocation(characterLocation);
-                    Log.d(TAG, "onCharactersReceived: Character updated at " + characterLocation);
+                    Log.d(TAG, "onCharactersReceived: Character " + characterType + " updated at " + characterLocation);
                 }
             }
         }

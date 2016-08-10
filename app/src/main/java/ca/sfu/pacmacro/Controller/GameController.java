@@ -37,5 +37,6 @@ public class GameController {
 
     public void stopLoop() {
         this.timer.cancel();
+        this.timer.purge();
     }
 }
