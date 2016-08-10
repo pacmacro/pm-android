@@ -65,4 +65,10 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
         mGameController.startLoop();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGameController.stopLoop();
+    }
 }
