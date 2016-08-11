@@ -83,7 +83,7 @@ public class PlayerService extends Service {
                 .bigText(getString(R.string.player_service_notification_text));
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                .setSmallIcon(R.drawable.cast_ic_notification_small_icon)
+                .setSmallIcon(R.drawable.pacman)
                 .setContentTitle(getString(R.string.player_service_notification_title))
                 .setContentText(getString(R.string.player_service_notification_text))
                 .setContentIntent(mPendingIntent)
