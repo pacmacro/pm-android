@@ -20,4 +20,8 @@
     <string name="player_service_notification_text">PacMacro location service is running in the background.</string>
     <string name="player_activity_tag">Tag Player</string>
     <string name="player_tag_select">Select a character</string>
+    <string name="player_activity_stop_warning_title">Confirm Stop</string>
+    <string name="player_activity_stop_warning_body">Players are restricted from using the rest of the app while playing. If you stop playing, your character will be removed from the game. Do you want to stop playing?</string>
+    <string name="player_activity_stop_warning_positive">Yes, stop playing</string>
+    <string name="player_activity_stop_warning_negative">No, keep playing</string>
 </resources>

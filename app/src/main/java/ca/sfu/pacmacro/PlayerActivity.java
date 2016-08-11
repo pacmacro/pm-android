@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,9 +58,7 @@ public class PlayerActivity extends AppCompatActivity {
             stopButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(PlayerActivity.this, PlayerService.class);
-                    stopService(intent);
-                    finish();
+                    showStopWarning();
                 }
             });
         }
@@ -90,6 +89,40 @@ public class PlayerActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showStopWarning();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void showStopWarning() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.player_activity_stop_warning_title)
+                .setMessage(R.string.player_activity_stop_warning_body)
+                .setPositiveButton(R.string.player_activity_stop_warning_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        stopPlaying();
+                    }
+                })
+                .setNegativeButton(R.string.player_activity_stop_warning_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void stopPlaying() {
+        Intent intent = new Intent(PlayerActivity.this, PlayerService.class);
+        stopService(intent);
+        finish();
     }
 
     @Override
