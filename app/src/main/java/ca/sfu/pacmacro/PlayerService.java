@@ -2,6 +2,7 @@ package ca.sfu.pacmacro;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ public class PlayerService extends Service {
     NotificationManager mNotificationManager;
     LocationManager mLocationManager;
     private LocationListener mLocationListener;
+    private PendingIntent mPendingIntent;
 
 
     public PlayerService() {
@@ -65,6 +67,7 @@ public class PlayerService extends Service {
         try {
             Toast.makeText(PlayerService.this, "On Destroy called!!!!", Toast.LENGTH_SHORT).show();
             mLocationManager.removeUpdates(mLocationListener);
+            mPendingIntent.cancel();
             mNotificationManager.cancel(NOTIFICATION_ID);
         } catch (SecurityException ignored) {
 
@@ -72,6 +75,9 @@ public class PlayerService extends Service {
     }
 
     private Notification createNotification() {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        mPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         NotificationCompat.BigTextStyle notificationStyle = new NotificationCompat.BigTextStyle()
                 .setBigContentTitle(getString(R.string.player_service_notification_title))
                 .bigText(getString(R.string.player_service_notification_text));
@@ -80,7 +86,7 @@ public class PlayerService extends Service {
                 .setSmallIcon(R.drawable.cast_ic_notification_small_icon)
                 .setContentTitle(getString(R.string.player_service_notification_title))
                 .setContentText(getString(R.string.player_service_notification_text))
-//                .setContentIntent(pi)
+                .setContentIntent(mPendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setStyle(notificationStyle);
 
