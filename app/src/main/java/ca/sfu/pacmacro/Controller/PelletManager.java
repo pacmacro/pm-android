@@ -2,6 +2,8 @@ package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -14,6 +16,7 @@ import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
 import ca.sfu.pacmacro.API.model.PelletData;
 import ca.sfu.pacmacro.Model.Pellet;
+import ca.sfu.pacmacro.R;
 
 /**
  * Track dots and power pills locations
@@ -47,7 +50,8 @@ public class PelletManager {
             //TODO: initialize latlng from pelletData
             LatLng latLng = pelletData.getLocation();
             Pellet.PelletType type = pelletData.getType();
-            Marker marker = mMapCallback.initializeMarker(latLng, "");
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pacman);
+            Marker marker = mMapCallback.initializeMarker(latLng, "", icon);
             //TODO: initialize pellet with location and type
             Pellet pellet = new Pellet(marker, type);
             Log.d(TAG, "onPelletsReceived: Received pellet of type" + "TYPE");

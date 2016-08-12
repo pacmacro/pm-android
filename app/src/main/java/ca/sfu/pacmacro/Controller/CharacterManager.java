@@ -2,6 +2,8 @@ package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -29,7 +31,7 @@ public class CharacterManager {
     public CharacterManager(PacMacroClient apiClient, GameController gameController) {
         this(apiClient, new InitializeMarkerCallback() {
             @Override
-            public Marker initializeMarker(LatLng latLng, String name) {
+            public Marker initializeMarker(LatLng latLng, String name, BitmapDescriptor icon) {
                 return null;
             }
         }, gameController);
@@ -72,7 +74,8 @@ public class CharacterManager {
 
                 Character character = getCharacterByType(characterType);
                 if (character == null) {
-                    Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString());
+                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(characterType.getIconId());
+                    Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString(), icon);
                     character = new Character(characterType, characterState, marker);
                     mCharacterList.add(character);
                     Log.d(TAG, "Character added: \n" +

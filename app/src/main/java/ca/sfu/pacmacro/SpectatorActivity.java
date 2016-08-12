@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -55,8 +56,8 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
         InitializeMarkerCallback markerCallback = new InitializeMarkerCallback() {
             @Override
-            public Marker initializeMarker(LatLng latLng, String name) {
-                return mMap.addMarker(new MarkerOptions().position(latLng).title(name));
+            public Marker initializeMarker(LatLng latLng, String name, BitmapDescriptor icon) {
+                return mMap.addMarker(new MarkerOptions().position(latLng).title(name).icon(icon));
             }
         };
         mCharacterManager = new CharacterManager(mApiClient, markerCallback, mGameController);
