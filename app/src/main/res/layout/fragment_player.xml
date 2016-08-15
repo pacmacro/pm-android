@@ -8,44 +8,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/player_fragment_title" />
+        android:text="@string/player_fragment_title"
+        android:padding="5dp"
+        android:textSize="25sp"/>
 
-    <RadioGroup
+    <include
+        layout="@layout/character_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/character_selection">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/character_pacman"
-            android:text="@string/pacman_name"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/character_inky"
-            android:text="@string/inky_name"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/character_blinky"
-            android:text="@string/blinky_name"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/character_pinky"
-            android:text="@string/pinky_name"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/character_clyde"
-            android:text="@string/clyde_name"/>
-
-    </RadioGroup>
+        android:layout_gravity="center_horizontal"/>
 
     <Button
         android:layout_width="wrap_content"

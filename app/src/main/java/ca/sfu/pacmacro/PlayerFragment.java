@@ -8,8 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import net.soulwolf.widget.materialradio.MaterialRadioGroup;
 
 import ca.sfu.pacmacro.Model.Character;
 
@@ -37,7 +38,7 @@ public class PlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        RadioGroup characterSelection = (RadioGroup) view.findViewById(R.id.character_selection);
+        MaterialRadioGroup characterSelection = (MaterialRadioGroup) view.findViewById(R.id.character_selection);
 
         Button startButton = (Button) view.findViewById(R.id.player_start);
         startButton.setOnClickListener(getStartButtonListener(characterSelection));
@@ -45,7 +46,7 @@ public class PlayerFragment extends Fragment {
         return view;
     }
 
-    public View.OnClickListener getStartButtonListener(final RadioGroup characterSelection) {
+    public View.OnClickListener getStartButtonListener(final MaterialRadioGroup characterSelection) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
