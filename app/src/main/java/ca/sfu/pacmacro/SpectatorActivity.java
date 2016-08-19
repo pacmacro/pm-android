@@ -1,12 +1,16 @@
 package ca.sfu.pacmacro;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,13 +60,26 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
         InitializeMarkerCallback markerCallback = new InitializeMarkerCallback() {
             @Override
-            public Marker initializeMarker(LatLng latLng, String name, BitmapDescriptor icon) {
-                return mMap.addMarker(new MarkerOptions().position(latLng).title(name).icon(icon));
+            public Marker initializeMarker(LatLng latLng, String name, int drawableResourceId) {
+                Bitmap mDotMarkerBitmap = getBitmapFromDrawable(drawableResourceId);
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(name).icon(BitmapDescriptorFactory.fromBitmap(mDotMarkerBitmap));
+                return mMap.addMarker(markerOptions);
             }
         };
         mCharacterManager = new CharacterManager(mApiClient, markerCallback, mGameController);
 
         mGameController.startLoop();
+    }
+
+    @NonNull
+    private Bitmap getBitmapFromDrawable(int drawableResourceId) {
+        int px = getResources().getDimensionPixelSize(R.dimen.character_map_icon_size);
+        Bitmap mDotMarkerBitmap = Bitmap.createBitmap(px, px, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mDotMarkerBitmap);
+        Drawable shape = getResources().getDrawable(drawableResourceId);
+        shape.setBounds(0, 0, mDotMarkerBitmap.getWidth(), mDotMarkerBitmap.getHeight());
+        shape.draw(canvas);
+        return mDotMarkerBitmap;
     }
 
     @Override

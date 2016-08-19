@@ -2,8 +2,6 @@ package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -50,8 +48,7 @@ public class PelletManager {
             //TODO: initialize latlng from pelletData
             LatLng latLng = pelletData.getLocation();
             Pellet.PelletType type = pelletData.getType();
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pacman);
-            Marker marker = mMapCallback.initializeMarker(latLng, "", icon);
+            Marker marker = mMapCallback.initializeMarker(latLng, "", R.drawable.pacman);
             //TODO: initialize pellet with location and type
             Pellet pellet = new Pellet(marker, type);
             Log.d(TAG, "onPelletsReceived: Received pellet of type" + "TYPE");

@@ -2,8 +2,6 @@ package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -31,7 +29,7 @@ public class CharacterManager {
     public CharacterManager(PacMacroClient apiClient, GameController gameController) {
         this(apiClient, new InitializeMarkerCallback() {
             @Override
-            public Marker initializeMarker(LatLng latLng, String name, BitmapDescriptor icon) {
+            public Marker initializeMarker(LatLng latLng, String name, int drawableResourceId) {
                 return null;
             }
         }, gameController);
@@ -74,8 +72,7 @@ public class CharacterManager {
 
                 Character character = getCharacterByType(characterType);
                 if (character == null) {
-                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(characterType.getIconId());
-                    Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString(), icon);
+                    Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString(), characterType.getIconId());
                     character = new Character(characterType, characterState, marker);
                     mCharacterList.add(character);
                     Log.d(TAG, "Character added: \n" +
@@ -108,11 +105,7 @@ public class CharacterManager {
     }
 
     public Character[] getCharacters() {
-        return (Character[]) mCharacterList.toArray();
-//        return new Character[] {new Character(Character.CharacterType.PACMAN, null),
-//                                new Character(Character.CharacterType.INKY, null),
-//                                new Character(Character.CharacterType.BLINKY, null),
-//                                new Character(Character.CharacterType.PINKY, null),
-//                                new Character(Character.CharacterType.CLYDE, null)};
+        Character[] characters = new Character[mCharacterList.size()];
+        return mCharacterList.toArray(characters);
     }
 }
