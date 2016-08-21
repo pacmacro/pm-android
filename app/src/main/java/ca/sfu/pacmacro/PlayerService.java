@@ -4,30 +4,36 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Model.Character;
 
-public class PlayerService extends Service {
+public class PlayerService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public final static int NOTIFICATION_ID = 1;
 
     private Character.CharacterType mSelectedCharacterType;
     private PacMacroClient mApiClient = new PacMacroClient();
     private static final String TAG = "PLAYER_SERVICE";
-    NotificationManager mNotificationManager;
-    LocationManager mLocationManager;
+    private NotificationManager mNotificationManager;
+//    LocationManager mLocationManager;
     private LocationListener mLocationListener;
     private PendingIntent mPendingIntent;
+    private GoogleApiClient mGoogleApiClient;
 
 
     public PlayerService() {
@@ -45,8 +51,14 @@ public class PlayerService extends Service {
 
         mLocationListener = createLocationListener();
 
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        registerLocationUpdateCallback();
+//        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        registerLocationUpdateCallback();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).build();
+        mGoogleApiClient.connect();
 
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Notification notification = createNotification();
@@ -66,9 +78,10 @@ public class PlayerService extends Service {
     public void onDestroy() {
         try {
             Toast.makeText(PlayerService.this, "On Destroy called!!!!", Toast.LENGTH_SHORT).show();
-            mLocationManager.removeUpdates(mLocationListener);
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
             mPendingIntent.cancel();
             mNotificationManager.cancel(NOTIFICATION_ID);
+            mGoogleApiClient.disconnect();
         } catch (SecurityException ignored) {
 
         }
@@ -97,7 +110,10 @@ public class PlayerService extends Service {
         Log.d(TAG, "started registerLocationUpdateCallback");
 
         try {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 1.0f, mLocationListener);
+            // LocationManager.FUSED_PROVIDER is undefined, even though it exists in LocationManager.java
+//            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 0.5f, mLocationListener);
+            LocationRequest locationRequest = LocationRequest.create().setInterval(1000L).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,locationRequest ,mLocationListener);
         }
         catch (SecurityException ignored) {
 
@@ -115,21 +131,21 @@ public class PlayerService extends Service {
             public void onLocationChanged(Location location) {
                 updateLocation(location);
             }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
         };
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        registerLocationUpdateCallback();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
