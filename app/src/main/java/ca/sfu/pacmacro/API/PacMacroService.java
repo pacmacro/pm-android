@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
+import ca.sfu.pacmacro.API.model.PelletData;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -37,9 +38,12 @@ public interface PacMacroService {
 
     @Headers("Content-Type: application/json")
     @PUT("player/{type}/state")
-    Call<String> updateCharacterState(@Path("type") String type, @Body String state);
+    Call<String> updateCharacterState(@Path("type") String type, @Body Map<String, String> state);
 
     @GET("player/details")
     Call<List<CharacterData>> getCharacterDetails();
+
+    @GET("pacdots")
+    Call<List<PelletData>> getPellets();
 
 }

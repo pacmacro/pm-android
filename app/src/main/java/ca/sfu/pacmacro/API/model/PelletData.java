@@ -10,9 +10,10 @@ import ca.sfu.pacmacro.Model.Pellet;
 public class PelletData {
     private LatLng location;
     private Pellet.PelletType type;
+    private boolean eaten;
 
-    public PelletData(String type, double latitude, double longitude) {
-        if (type.equals("pill")) {
+    public PelletData(boolean powerPill, double latitude, double longitude, boolean eaten) {
+        if (powerPill) {
             this.type = Pellet.PelletType.PILL;
         }
         else {
@@ -20,6 +21,7 @@ public class PelletData {
         }
 
         this.location = new LatLng(latitude, longitude);
+        this.eaten = eaten;
     }
 
     public LatLng getLocation() {

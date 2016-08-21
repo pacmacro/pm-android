@@ -6,4 +6,5 @@ package ca.sfu.pacmacro.API;
 public class JsonProperties {
     public static final String PROPERTY_LATITUDE = "latitude";
     public static final String PROPERTY_LONGITUDE = "longitude";
+    public static final String PROPERTY_STATE = "state";
 }

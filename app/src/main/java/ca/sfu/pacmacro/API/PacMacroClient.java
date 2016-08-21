@@ -100,7 +100,9 @@ public class PacMacroClient {
     }
 
     public void updateCharacterState(Character.CharacterType characterType, Character.CharacterState characterState) {
-        Call<String> updateCharacterState = service.updateCharacterState(characterType.toString(), characterState.toString());
+        Map<String, String> stateMap = new HashMap<>();
+        stateMap.put(JsonProperties.PROPERTY_STATE, characterState.toString());
+        Call<String> updateCharacterState = service.updateCharacterState(characterType.toString(), stateMap);
 
         updateCharacterState.enqueue(new Callback<String>() {
             @Override
