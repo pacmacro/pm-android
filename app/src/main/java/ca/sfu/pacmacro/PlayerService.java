@@ -91,27 +91,18 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         Intent intent = new Intent(this, PlayerActivity.class);
         mPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.BigTextStyle notificationStyle = new NotificationCompat.BigTextStyle()
-                .setBigContentTitle(getString(R.string.player_service_notification_title))
-                .bigText(getString(R.string.player_service_notification_text));
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
                 .setSmallIcon(R.drawable.pacman)
                 .setContentTitle(getString(R.string.player_service_notification_title))
                 .setContentText(getString(R.string.player_service_notification_text))
                 .setContentIntent(mPendingIntent)
-                .setDefaults(Notification.DEFAULT_SOUND)
-                .setStyle(notificationStyle);
+                .setPriority(Notification.PRIORITY_MIN);
 
         return mBuilder.build();
     }
 
     private void registerLocationUpdateCallback() {
-        Log.d(TAG, "started registerLocationUpdateCallback");
-
         try {
-            // LocationManager.FUSED_PROVIDER is undefined, even though it exists in LocationManager.java
-//            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 0.5f, mLocationListener);
             LocationRequest locationRequest = LocationRequest.create().setInterval(1000L).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,locationRequest ,mLocationListener);
         }
@@ -123,6 +114,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
     private void updateLocation(Location location) {
         mApiClient.setCharacterLocation(mSelectedCharacterType, location.getLatitude(), location.getLongitude());
         Toast.makeText(PlayerService.this, "Location Updated", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Location updated to" + location.toString());
     }
 
     private LocationListener createLocationListener() {
