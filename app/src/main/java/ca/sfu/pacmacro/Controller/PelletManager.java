@@ -51,7 +51,7 @@ public class PelletManager {
             Marker marker = mMapCallback.initializeMarker(latLng, "", R.drawable.pacman);
             //TODO: initialize pellet with location and type
             Pellet pellet = new Pellet(marker, type);
-            Log.d(TAG, "onPelletsReceived: Received pellet of type" + "TYPE");
+            Log.v(TAG, "Received pellet of type " + type);
             mPelletList.add(pellet);
         }
     }

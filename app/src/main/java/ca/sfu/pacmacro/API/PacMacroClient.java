@@ -84,12 +84,12 @@ public class PacMacroClient {
         service.setCharacterLocation(characterType.toString(), latlngMap).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Response<String> response) {
-                Log.d(TAG, "Set location success");
+                Log.v(TAG, "Set location success");
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d(TAG, "Set location failed");
+                Log.v(TAG, "Set location failed: " + t.getMessage());
             }
         });
     }
@@ -112,7 +112,7 @@ public class PacMacroClient {
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d(TAG, "Update character state failed: " + t.getMessage());
+                Log.v(TAG, "Update character state failed: " + t.getMessage());
             }
         });
     }
@@ -125,12 +125,12 @@ public class PacMacroClient {
         selectCharacter.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Response<String> response) {
-                Log.d(TAG, "Successfully selected character: " + characterType);
+                Log.v(TAG, "Successfully selected character: " + characterType);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d(TAG, "Failed to select character: " + characterType);
+                Log.v(TAG, "Failed to select character: " + characterType);
             }
         });
     }
@@ -140,12 +140,12 @@ public class PacMacroClient {
         deselectCharacter.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Response<String> response) {
-                Log.d(TAG, "Successfully deselected character: " + characterType);
+                Log.v(TAG, "Successfully deselected character: " + characterType);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d(TAG, "Failed to deselect character: " + characterType);
+                Log.v(TAG, "Failed to deselect character: " + characterType);
             }
         });
     }

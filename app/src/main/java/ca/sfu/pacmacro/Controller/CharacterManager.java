@@ -45,7 +45,7 @@ public class CharacterManager {
             @Override
             public void execute() {
                 mApiClient.getCharacters();
-                Log.d(TAG, "Get characters request sent");
+                Log.v(TAG, "Get characters request sent");
             }
         });
     }
@@ -53,11 +53,11 @@ public class CharacterManager {
     @Subscribe
     public void onCharacterSent(CharacterSentEvent event) {
         if (event.getStatus() == CharacterSentEvent.RequestStatus.SUCCESS) {
-            Log.d(TAG, "Added character: " + event.getResponse().message());
+            Log.v(TAG, "Added character: " + event.getResponse().message());
             mApiClient.getCharacters();
         }
         else {
-            Log.d(TAG, "Failed to add character");
+            Log.v(TAG, "Failed to add character");
         }
     }
 
@@ -75,7 +75,7 @@ public class CharacterManager {
                     Marker marker = mMapCallback.initializeMarker(characterLocation, characterType.toString(), characterType.getIconId());
                     character = new Character(characterType, characterState, marker);
                     mCharacterList.add(character);
-                    Log.d(TAG, "Character added: \n" +
+                    Log.v(TAG, "Character added: \n" +
                             "Type: " + characterType + ", " +
                             "Location: " + characterLocation + ", " +
                             "State: " + characterState);
@@ -83,15 +83,17 @@ public class CharacterManager {
                 else {
                     character.updateLocation(characterLocation);
                     character.updateState(characterState);
-                    Log.d(TAG, "Character updated: \n" +
+                    Log.v(TAG, "Character updated: \n" +
                             "Type: " + characterType + ", " +
                             "Location: " + characterLocation + ", " +
                             "State: " + characterState);
                 }
+
+                character.updateMarkerVisibility();
             }
         }
         else {
-            Log.d(TAG, "No characters received.");
+            Log.v(TAG, "No characters received.");
         }
     }
 

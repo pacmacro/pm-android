@@ -114,7 +114,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
     private void updateLocation(Location location) {
         mApiClient.setCharacterLocation(mSelectedCharacterType, location.getLatitude(), location.getLongitude());
         Toast.makeText(PlayerService.this, "Location Updated", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Location updated to" + location.toString());
+        Log.v(TAG, "Location updated to" + location.toString());
     }
 
     private LocationListener createLocationListener() {
