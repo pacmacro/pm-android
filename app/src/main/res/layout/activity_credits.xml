@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60sp"
-            android:text="PacMacro"/>
+            android:text="@string/app_name"/>
     </LinearLayout>
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
         android:textSize="40sp"
-        android:text="Sponsors"/>
+        android:text="@string/credits_activity_sponsors_heading"/>
 
     <ImageView
         android:layout_width="@dimen/mobify_icon_width"

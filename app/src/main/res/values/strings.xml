@@ -22,4 +22,5 @@
     <string name="action_credits">Credits</string>
     <string name="mobify_logo_content_description">Mobify logo</string>
     <string name="sfu_logo_content_description">SFU logo</string>
+    <string name="credits_activity_sponsors_heading">Sponsors</string>
 </resources>
