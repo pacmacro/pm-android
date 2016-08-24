@@ -45,6 +45,7 @@
         android:layout_width="@dimen/mobify_icon_width"
         android:layout_height="@dimen/mobify_icon_height"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:id="@+id/mobifyLogo"
         android:src="@drawable/mobify_logo"
         android:contentDescription="@string/mobify_logo_content_description" />
