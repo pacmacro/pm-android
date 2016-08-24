@@ -17,6 +17,7 @@ import ca.sfu.pacmacro.API.events.CharactersReceivedEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
+import ca.sfu.pacmacro.API.model.PelletData;
 import ca.sfu.pacmacro.Model.Character;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,7 @@ public class PacMacroClient {
     public PacMacroClient() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(CharacterData.class, new CharacterDeserializer())
+                .registerTypeAdapter(PelletData.class, new PelletDeserializer())
                 .create();
         this.retrofit = new Retrofit.Builder()
                 .baseUrl("http://pacmacro.herokuapp.com/")
@@ -95,8 +97,18 @@ public class PacMacroClient {
     }
 
     public void getPellets() {
-        //TODO: get pellets from API
-        EventBus.getDefault().post(new PelletReceivedEvent());
+        Call<List<PelletData>> getPellets = service.getPellets();
+        getPellets.enqueue(new Callback<List<PelletData>>() {
+            @Override
+            public void onResponse(Response<List<PelletData>> response) {
+                EventBus.getDefault().post(new PelletReceivedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.v(TAG, "Get pellets failed: " + t.getMessage());
+            }
+        });
     }
 
     public void updateCharacterState(Character.CharacterType characterType, Character.CharacterState characterState) {

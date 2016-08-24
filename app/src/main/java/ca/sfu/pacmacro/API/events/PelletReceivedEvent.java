@@ -13,4 +13,8 @@ public class PelletReceivedEvent {
     public List<PelletData> getPelletDataList() {
         return pelletDataList;
     }
+
+    public PelletReceivedEvent(List<PelletData> pelletDataList) {
+        this.pelletDataList = pelletDataList;
+    }
 }

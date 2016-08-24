@@ -2,8 +2,8 @@ package ca.sfu.pacmacro.Controller;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -14,7 +14,6 @@ import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
 import ca.sfu.pacmacro.API.model.PelletData;
 import ca.sfu.pacmacro.Model.Pellet;
-import ca.sfu.pacmacro.R;
 
 /**
  * Track dots and power pills locations
@@ -23,36 +22,46 @@ public class PelletManager {
     private static final String TAG = "PelletManager";
     private PacMacroClient mApiClient;
     private List<Pellet> mPelletList;
-    private InitializeMarkerCallback mMapCallback;
+    private InitializeCircleCallback mMapCallback;
     private GameController mGameController;
 
-    public PelletManager(PacMacroClient mApiClient, InitializeMarkerCallback mMapCallback, GameController mGameController) {
-        this.mApiClient = mApiClient;
-        this.mMapCallback = mMapCallback;
+    public PelletManager(PacMacroClient apiClient, InitializeCircleCallback mapCallback, GameController gameController) {
+        this.mApiClient = apiClient;
+        this.mMapCallback = mapCallback;
 
         EventBus.getDefault().register(this);
 
-        mGameController.registerAction(new GameLoopAction() {
+        gameController.registerAction(new GameLoopAction() {
             @Override
             public void execute() {
-                //TODO: fetch pellets
+                mApiClient.getPellets();
+                Log.v(TAG, "Get pellets request sent");
             }
         });
     }
 
     @Subscribe
     public void onPelletsReceived(PelletReceivedEvent event) {
-        mPelletList.clear();
+        clearPellets();
 
         for (PelletData pelletData: event.getPelletDataList()) {
-            //TODO: initialize latlng from pelletData
             LatLng latLng = pelletData.getLocation();
             Pellet.PelletType type = pelletData.getType();
-            Marker marker = mMapCallback.initializeMarker(latLng, "", R.drawable.pacman);
-            //TODO: initialize pellet with location and type
-            Pellet pellet = new Pellet(marker, type);
+            boolean isVisible = pelletData.isVisible();
+
+            boolean isPowerPill = type == Pellet.PelletType.PILL;
+            Circle circle = mMapCallback.initializeCircle(latLng, isPowerPill);
+            circle.setVisible(isVisible);
+
+            Pellet pellet = new Pellet(circle, type);
             Log.v(TAG, "Received pellet of type " + type);
             mPelletList.add(pellet);
+        }
+    }
+
+    private void clearPellets() {
+        for (Pellet pellet : mPelletList) {
+            pellet.getCircle().remove();
         }
     }
 }

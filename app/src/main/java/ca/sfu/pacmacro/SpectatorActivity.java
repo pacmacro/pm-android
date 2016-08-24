@@ -11,6 +11,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -18,13 +20,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
+import ca.sfu.pacmacro.Controller.InitializeCircleCallback;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
+import ca.sfu.pacmacro.Controller.PelletManager;
 
 public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private PacMacroClient mApiClient;
     private CharacterManager mCharacterManager;
+    private PelletManager mPelletManager;
     private GameController mGameController;
 
     private int PERMISSION_RESPONSE_CODE = 0;
@@ -58,15 +63,36 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        InitializeMarkerCallback markerCallback = new InitializeMarkerCallback() {
+        InitializeMarkerCallback characterMarkerCallback = new InitializeMarkerCallback() {
             @Override
             public Marker initializeMarker(LatLng latLng, String name, int drawableResourceId) {
                 Bitmap mDotMarkerBitmap = getBitmapFromDrawable(drawableResourceId);
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(name).icon(BitmapDescriptorFactory.fromBitmap(mDotMarkerBitmap));
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(latLng)
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromBitmap(mDotMarkerBitmap));
                 return mMap.addMarker(markerOptions);
             }
         };
-        mCharacterManager = new CharacterManager(mApiClient, markerCallback, mGameController);
+        mCharacterManager = new CharacterManager(mApiClient, characterMarkerCallback, mGameController);
+
+        InitializeCircleCallback pelletCircleCallback = new InitializeCircleCallback() {
+            @Override
+            public Circle initializeCircle(LatLng latLng, boolean isPowerPill) {
+                int radius = 1;
+                if (isPowerPill) {
+                    radius = 3;
+                }
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(latLng)
+                        .radius(radius)
+                        .fillColor(android.R.color.white)
+                        .strokeColor(android.R.color.white);
+                return mMap.addCircle(circleOptions);
+            }
+        };
+        mPelletManager = new PelletManager(mApiClient, pelletCircleCallback, mGameController);
 
         mGameController.startLoop();
     }

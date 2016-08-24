@@ -31,4 +31,8 @@ public class PelletData {
     public Pellet.PelletType getType() {
         return type;
     }
+
+    public boolean isVisible() {
+        return !eaten;
+    }
 }
