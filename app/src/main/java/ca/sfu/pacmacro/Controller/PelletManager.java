@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
@@ -21,7 +22,7 @@ import ca.sfu.pacmacro.Model.Pellet;
 public class PelletManager {
     private static final String TAG = "PelletManager";
     private PacMacroClient mApiClient;
-    private List<Pellet> mPelletList;
+    private List<Pellet> mPelletList = new ArrayList<>();
     private InitializeCircleCallback mMapCallback;
     private GameController mGameController;
 
