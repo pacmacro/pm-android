@@ -2,11 +2,6 @@
     <string name="app_name">PacMacro</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_lobby">LobbyActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="spectator_fragment_title">Spectator</string>
     <string name="player_fragment_title">Choose a player</string>
     <string name="pacman_name">Pacman</string>
@@ -24,4 +19,7 @@
     <string name="player_activity_stop_warning_body">Players are restricted from using the rest of the app while playing. If you stop playing, your character will be removed from the game. Do you want to stop playing?</string>
     <string name="player_activity_stop_warning_positive">Yes, stop playing</string>
     <string name="player_activity_stop_warning_negative">No, keep playing</string>
+    <string name="action_credits">Credits</string>
+    <string name="mobify_logo_content_description">Mobify logo</string>
+    <string name="sfu_logo_content_description">SFU logo</string>
 </resources>

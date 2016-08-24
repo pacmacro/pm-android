@@ -1,5 +1,6 @@
 package ca.sfu.pacmacro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -64,7 +65,9 @@ public class LobbyActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_credits) {
+            Intent intent = new Intent(this, CreditsActivity.class);
+            startActivity(intent);
             return true;
         }
 
