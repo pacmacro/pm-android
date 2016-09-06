@@ -2,7 +2,7 @@
     <string name="app_name">PacMacro</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_lobby">LobbyActivity</string>
-    <string name="spectator_fragment_title">Spectator</string>
+    <string name="spectator_fragment_title">Choose a team</string>
     <string name="player_fragment_title">Choose a player</string>
     <string name="pacman_name">Pacman</string>
     <string name="inky_name">Inky</string>
@@ -23,4 +23,6 @@
     <string name="mobify_logo_content_description">Mobify logo</string>
     <string name="sfu_logo_content_description">SFU logo</string>
     <string name="credits_activity_sponsors_heading">Sponsors</string>
+    <string name="pacman_team_name">Pacman\'s Team</string>
+    <string name="ghost_team_name">Ghost\'s Team</string>
 </resources>

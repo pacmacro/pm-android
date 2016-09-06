@@ -1,0 +1,34 @@
+<net.soulwolf.widget.materialradio.MaterialRadioGroup xmlns:soulwolf="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_marginTop="50dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/team_selection">
+
+    <net.soulwolf.widget.materialradio.MaterialRadioButton
+        android:layout_width="@dimen/character_icon_radio_width"
+        android:layout_height="@dimen/character_icon_radio_height"
+        android:id="@+id/team_pacman"
+        soulwolf:mcTextSize="6sp"
+        soulwolf:mcText="@string/pacman_team_name"
+        soulwolf:mcPadding="5dp"
+        soulwolf:mcChecked="false"
+        soulwolf:mcAnimator="true"
+        soulwolf:mcTextColor="@drawable/radio_button_text_selector"
+        soulwolf:mcButton="@drawable/pacman" />
+
+    <net.soulwolf.widget.materialradio.MaterialRadioButton
+        android:layout_width="@dimen/character_icon_radio_width"
+        android:layout_height="@dimen/character_icon_radio_height"
+        android:id="@+id/team_ghost"
+        soulwolf:mcTextSize="6sp"
+        soulwolf:mcText="@string/ghost_team_name"
+        soulwolf:mcPadding="5dp"
+        soulwolf:mcChecked="false"
+        soulwolf:mcAnimator="true"
+        soulwolf:mcTextColor="@drawable/radio_button_text_selector"
+        soulwolf:mcButton="@drawable/inky"/>
+
+</net.soulwolf.widget.materialradio.MaterialRadioGroup>

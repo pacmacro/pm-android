@@ -2,12 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.sfu.pacmacro.SpectatorFragment">
+    tools:context="ca.sfu.pacmacro.SpectatorFragment"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/spectator_fragment_title" />
+
+    <include
+        layout="@layout/team_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
 
     <Button
         android:layout_width="wrap_content"

@@ -25,19 +25,22 @@ public class CharacterManager {
     private PacMacroClient mApiClient;
     private List<Character> mCharacterList = new ArrayList<>();
     private InitializeMarkerCallback mMapCallback;
+    private CharacterDisplayCriteria mDisplayCriteria;
 
-    public CharacterManager(PacMacroClient apiClient, GameController gameController) {
+    public CharacterManager(PacMacroClient apiClient, GameController gameController, CharacterDisplayCriteria displayCriteria) {
         this(apiClient, new InitializeMarkerCallback() {
             @Override
             public Marker initializeMarker(LatLng latLng, String name, int drawableResourceId) {
                 return null;
             }
-        }, gameController);
+        }, gameController, displayCriteria);
     }
 
-    public CharacterManager(PacMacroClient apiClient, InitializeMarkerCallback callback, GameController gameController) {
+    public CharacterManager(PacMacroClient apiClient, InitializeMarkerCallback callback, GameController gameController,
+                            CharacterDisplayCriteria displayCriteria) {
         this.mApiClient = apiClient;
         this.mMapCallback = callback;
+        this.mDisplayCriteria = displayCriteria;
 
         EventBus.getDefault().register(this);
 
@@ -89,7 +92,13 @@ public class CharacterManager {
                             "State: " + characterState);
                 }
 
-                character.updateMarkerVisibility();
+                boolean isUninitialized = character.getState() == Character.CharacterState.UNINITIALIZED;
+                boolean isHidden = mDisplayCriteria.isCharacterHidden(character);
+                boolean displayCharacter = true;
+                if (isUninitialized || isHidden) {
+                    displayCharacter = false;
+                }
+                character.updateMarkerVisibility(displayCharacter);
             }
         }
         else {

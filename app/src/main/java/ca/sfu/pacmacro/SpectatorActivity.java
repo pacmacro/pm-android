@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
+import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
 import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Controller.InitializeCircleCallback;
@@ -29,6 +30,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap mMap;
     private PacMacroClient mApiClient;
     private CharacterManager mCharacterManager;
+    private CharacterDisplayCriteria mDisplayCriteria;
     private PelletManager mPelletManager;
     private GameController mGameController;
 
@@ -39,6 +41,9 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        int team = getIntent().getExtras().getInt(CharacterDisplayCriteria.EXTRA_KEY);
+        mDisplayCriteria = new CharacterDisplayCriteria(team);
 
         mApiClient = new PacMacroClient();
         mGameController = new GameController();
@@ -74,7 +79,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
                 return mMap.addMarker(markerOptions);
             }
         };
-        mCharacterManager = new CharacterManager(mApiClient, characterMarkerCallback, mGameController);
+        mCharacterManager = new CharacterManager(mApiClient, characterMarkerCallback, mGameController, mDisplayCriteria);
 
         InitializeCircleCallback pelletCircleCallback = new InitializeCircleCallback() {
             @Override

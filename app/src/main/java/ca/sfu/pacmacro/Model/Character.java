@@ -79,12 +79,7 @@ public class Character {
         return characterType;
     }
 
-    public void updateMarkerVisibility() {
-        if (characterState == CharacterState.UNINITIALIZED) {
-            this.marker.setVisible(false);
-        }
-        else {
-            this.marker.setVisible(true);
-        }
+    public void updateMarkerVisibility(boolean isVisible) {
+        this.marker.setVisible(isVisible);
     }
 }

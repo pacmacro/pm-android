@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import net.soulwolf.widget.materialradio.MaterialRadioGroup;
+
+import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
+
 
 public class SpectatorFragment extends Fragment {
 
@@ -32,17 +36,30 @@ public class SpectatorFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spectator, container, false);
 
+        MaterialRadioGroup teamSelection = (MaterialRadioGroup) view.findViewById(R.id.team_selection);
+
         Button startButton = (Button) view.findViewById(R.id.spectator_start);
-        startButton.setOnClickListener(getStartButtonListener());
+        startButton.setOnClickListener(getStartButtonListener(teamSelection));
 
         return view;
     }
 
-    public View.OnClickListener getStartButtonListener() {
+    public View.OnClickListener getStartButtonListener(final MaterialRadioGroup teamSelection) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int selectedTeam = 1;
+                int teamId = teamSelection.getCheckedRadioButtonId();
+                switch(teamId) {
+                    case R.id.team_ghost:
+                        selectedTeam = CharacterDisplayCriteria.CRITERIA_GHOST_TEAM;
+                        break;
+                    case R.id.team_pacman:
+                        selectedTeam = CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM;
+                        break;
+                }
                 Intent intent = new Intent(getContext(), SpectatorActivity.class);
+                intent.putExtra(CharacterDisplayCriteria.EXTRA_KEY, selectedTeam);
                 startActivity(intent);
             }
         };

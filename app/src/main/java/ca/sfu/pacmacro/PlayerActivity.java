@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
+import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
 import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Model.Character;
@@ -25,6 +26,7 @@ public class PlayerActivity extends AppCompatActivity {
     private PacMacroClient mApiClient;
     private CharacterManager mCharacterManager;
     private GameController mGameController;
+    private CharacterDisplayCriteria mDisplayCriteria;
 
     private Character.CharacterType mSelectedCharacterType;
     private Character mSelectedCharacter;
@@ -38,7 +40,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         mGameController = new GameController();
         mApiClient = new PacMacroClient();
-        mCharacterManager = new CharacterManager(mApiClient, mGameController);
+        mDisplayCriteria = new CharacterDisplayCriteria(CharacterDisplayCriteria.CRITERIA_PLAYER);
+        mCharacterManager = new CharacterManager(mApiClient, mGameController, mDisplayCriteria);
 
         mApiClient.selectCharacter(mSelectedCharacterType, 0, 0);
         //TODO: set mSelectedCharacter state
