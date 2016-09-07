@@ -25,12 +25,12 @@ import ca.sfu.pacmacro.Model.Character;
 
 public class PlayerService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public final static int NOTIFICATION_ID = 1;
+    private static final long LOCATION_UPDATE_INTERVAL = 2000L;
 
     private Character.CharacterType mSelectedCharacterType;
     private PacMacroClient mApiClient = new PacMacroClient();
     private static final String TAG = "PLAYER_SERVICE";
     private NotificationManager mNotificationManager;
-//    LocationManager mLocationManager;
     private LocationListener mLocationListener;
     private PendingIntent mPendingIntent;
     private GoogleApiClient mGoogleApiClient;
@@ -103,7 +103,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
 
     private void registerLocationUpdateCallback() {
         try {
-            LocationRequest locationRequest = LocationRequest.create().setInterval(1000L).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            LocationRequest locationRequest = LocationRequest.create().setInterval(LOCATION_UPDATE_INTERVAL).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,locationRequest ,mLocationListener);
         }
         catch (SecurityException ignored) {

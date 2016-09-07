@@ -10,7 +10,7 @@ import java.util.TimerTask;
  */
 public class GameController {
     private static final int TIMER_DELAY = 0;
-    private static final int TIMER_PERIOD = 500;
+    private static final int TIMER_PERIOD = 1000;
 
     private Timer timer;
     private List<GameLoopAction> actions;
