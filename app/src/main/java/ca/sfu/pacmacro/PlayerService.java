@@ -51,9 +51,6 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
 
         mLocationListener = createLocationListener();
 
-//        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        registerLocationUpdateCallback();
-
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
