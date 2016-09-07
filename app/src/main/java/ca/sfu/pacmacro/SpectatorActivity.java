@@ -2,11 +2,13 @@ package ca.sfu.pacmacro;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -68,6 +70,8 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        centerMap();
+
         InitializeMarkerCallback characterMarkerCallback = new InitializeMarkerCallback() {
             @Override
             public Marker initializeMarker(LatLng latLng, String name, int drawableResourceId) {
@@ -84,22 +88,27 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         InitializeCircleCallback pelletCircleCallback = new InitializeCircleCallback() {
             @Override
             public Circle initializeCircle(LatLng latLng, boolean isPowerPill) {
-                int radius = 1;
+                int radius = 6;
                 if (isPowerPill) {
-                    radius = 3;
+                    radius = 18;
                 }
 
                 CircleOptions circleOptions = new CircleOptions()
                         .center(latLng)
                         .radius(radius)
-                        .fillColor(android.R.color.white)
-                        .strokeColor(android.R.color.white);
+                        .fillColor(Color.WHITE)
+                        .strokeColor(Color.BLACK)
+                        .strokeWidth(5.0f);
                 return mMap.addCircle(circleOptions);
             }
         };
         mPelletManager = new PelletManager(mApiClient, pelletCircleCallback, mGameController);
 
         mGameController.startLoop();
+    }
+
+    private void centerMap() {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.283625, -123.116455), 15f));
     }
 
     @NonNull
