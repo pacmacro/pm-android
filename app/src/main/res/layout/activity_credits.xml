@@ -54,7 +54,7 @@
         android:layout_width="@dimen/sfu_icon_width"
         android:layout_height="@dimen/sfu_icon_height"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/sfuLogo"
-        android:src="@drawable/sfu_logo"
-        android:contentDescription="@string/sfu_logo_content_description" />
+        android:id="@+id/csssLogo"
+        android:src="@drawable/csss_logo"
+        android:contentDescription="@string/csss_logo_content_description" />
 </LinearLayout>

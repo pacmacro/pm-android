@@ -21,7 +21,7 @@
     <string name="player_activity_stop_warning_negative">No, keep playing</string>
     <string name="action_credits">Credits</string>
     <string name="mobify_logo_content_description">Mobify logo</string>
-    <string name="sfu_logo_content_description">SFU logo</string>
+    <string name="csss_logo_content_description">CSSS logo</string>
     <string name="credits_activity_sponsors_heading">Sponsors</string>
     <string name="pacman_team_name">Pacman\'s Team</string>
     <string name="ghost_team_name">Ghost\'s Team</string>

@@ -27,8 +27,6 @@ public interface PacMacroService {
     @PUT("player/{type}/location")
     Call<String> setCharacterLocation(@Path("type") String type, @Body Map<String, Double> latlng);
 
-    //TODO: add methods for fetching pellets
-
     @Headers("Content-Type: application/json")
     @POST("player/{type}")
     Call<String> selectCharacter(@Path("type") String type, @Body Map<String, Double> latlng);
