@@ -8,8 +8,8 @@
     android:id="@+id/character_selection">
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/character_pacman"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/pacman_name"
@@ -20,8 +20,8 @@
         soulwolf:mcButton="@drawable/pacman" />
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/character_inky"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/inky_name"
@@ -32,8 +32,8 @@
         soulwolf:mcButton="@drawable/inky"/>
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/character_blinky"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/blinky_name"
@@ -44,8 +44,8 @@
         soulwolf:mcButton="@drawable/blinky"/>
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/character_pinky"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/pinky_name"
@@ -56,8 +56,8 @@
         soulwolf:mcButton="@drawable/pinky"/>
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/character_clyde"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/clyde_name"
