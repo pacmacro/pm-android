@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/team_pacman"
         soulwolf:mcTextSize="6sp"
-        soulwolf:mcText="Hello, World!"
+        soulwolf:mcText="@string/pacman_team_name"
         soulwolf:mcPadding="5dp"
         soulwolf:mcChecked="false"
         soulwolf:mcAnimator="true"

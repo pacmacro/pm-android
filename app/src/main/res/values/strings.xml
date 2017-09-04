@@ -24,5 +24,5 @@
     <string name="csss_logo_content_description">CSSS logo</string>
     <string name="credits_activity_sponsors_heading">Sponsors</string>
     <string name="pacman_team_name">Pacman\'s Team</string>
-    <string name="ghost_team_name">Ghost\'s Team</string>
+    <string name="ghost_team_name">Ghosts\' Team</string>
 </resources>
