@@ -1,9 +1,11 @@
 package ca.sfu.pacmacro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,21 +50,37 @@ public class SpectatorFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int selectedTeam = 1;
                 int teamId = teamSelection.getCheckedRadioButtonId();
                 switch(teamId) {
                     case R.id.team_ghost:
-                        selectedTeam = CharacterDisplayCriteria.CRITERIA_GHOST_TEAM;
+                        goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_GHOST_TEAM);
                         break;
                     case R.id.team_pacman:
-                        selectedTeam = CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM;
+                        AlertDialog.Builder confirmSelectionBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
+                        confirmSelectionBuilder.setTitle(R.string.dialog_title_confirm_team);
+                        confirmSelectionBuilder.setNegativeButton(R.string.dialog_button_cancel, null);
+                        confirmSelectionBuilder.setPositiveButton(R.string.dialog_button_confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM);
+                            }
+                        });
+                        confirmSelectionBuilder.show();
                         break;
+                    default:
+                        AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
+                        makeSelectionBuilder.setTitle(R.string.dialog_title_select_team);
+                        makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
+                        makeSelectionBuilder.show();
                 }
-                Intent intent = new Intent(getContext(), SpectatorActivity.class);
-                intent.putExtra(CharacterDisplayCriteria.EXTRA_KEY, selectedTeam);
-                startActivity(intent);
             }
         };
+    }
+
+    private void goToSpectatorActivity(int selectedTeam) {
+        Intent intent = new Intent(getContext(), SpectatorActivity.class);
+        intent.putExtra(CharacterDisplayCriteria.EXTRA_KEY, selectedTeam);
+        startActivity(intent);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class PlayerFragment extends Fragment {
             public void onClick(View v) {
                 Character.CharacterType selectedCharacter = null;
                 int selectedCharacterId = characterSelection.getCheckedRadioButtonId();
+                boolean isPlayerSelected = true;
                 switch (selectedCharacterId) {
                     case R.id.character_pacman:
                         selectedCharacter = Character.CharacterType.PACMAN;
@@ -68,13 +70,21 @@ public class PlayerFragment extends Fragment {
                     case R.id.character_clyde:
                         selectedCharacter = Character.CharacterType.CLYDE;
                         break;
+                    default:
+                        isPlayerSelected = false;
+
+                        AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(PlayerFragment.this.getContext());
+                        makeSelectionBuilder.setTitle(R.string.dialog_title_select_player);
+                        makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
+                        makeSelectionBuilder.show();
                 }
 
-                Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), PlayerActivity.class);
-                intent.putExtra("Character", selectedCharacter);
-                startActivity(intent);
-
+                if (isPlayerSelected) {
+                    Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), PlayerActivity.class);
+                    intent.putExtra("Character", selectedCharacter);
+                    startActivity(intent);
+                }
             }
         };
     }

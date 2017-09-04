@@ -25,4 +25,10 @@
     <string name="credits_activity_sponsors_heading">Sponsors</string>
     <string name="pacman_team_name">Pacman\'s Team</string>
     <string name="ghost_team_name">Ghost\'s Team</string>
+    <string name="dialog_title_select_team">Please Select a Team</string>
+    <string name="dialog_title_confirm_team">Confirm Team Selection</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_confirm">Confirm</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_title_select_player">Please Select a Player</string>
 </resources>
