@@ -8,8 +8,8 @@
     android:id="@+id/team_selection">
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/team_pacman"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/pacman_team_name"
@@ -17,11 +17,11 @@
         soulwolf:mcChecked="false"
         soulwolf:mcAnimator="true"
         soulwolf:mcTextColor="@drawable/radio_button_text_selector"
-        soulwolf:mcButton="@drawable/pacman" />
+        soulwolf:mcButton="@drawable/pacman"/>
 
     <net.soulwolf.widget.materialradio.MaterialRadioButton
-        android:layout_width="@dimen/character_icon_radio_width"
-        android:layout_height="@dimen/character_icon_radio_height"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/team_ghost"
         soulwolf:mcTextSize="6sp"
         soulwolf:mcText="@string/ghost_team_name"
