@@ -56,22 +56,23 @@ public class SpectatorFragment extends Fragment {
                         goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_GHOST_TEAM);
                         break;
                     case R.id.team_pacman:
-                        AlertDialog.Builder confirmSelectionBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
-                        confirmSelectionBuilder.setTitle(R.string.dialog_title_confirm_team);
-                        confirmSelectionBuilder.setNegativeButton(R.string.dialog_button_cancel, null);
-                        confirmSelectionBuilder.setPositiveButton(R.string.dialog_button_confirm, new DialogInterface.OnClickListener() {
+                        AlertDialog.Builder confirmSelectionDialogBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
+                        confirmSelectionDialogBuilder.setTitle(R.string.dialog_title_confirm_team);
+                        confirmSelectionDialogBuilder.setMessage(R.string.dialog_message_pacman_confirm_team);
+                        confirmSelectionDialogBuilder.setNegativeButton(R.string.dialog_button_cancel, null);
+                        confirmSelectionDialogBuilder.setPositiveButton(R.string.dialog_button_confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM);
                             }
                         });
-                        confirmSelectionBuilder.show();
+                        confirmSelectionDialogBuilder.show();
                         break;
                     default:
-                        AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
-                        makeSelectionBuilder.setTitle(R.string.dialog_title_select_team);
-                        makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
-                        makeSelectionBuilder.show();
+                        AlertDialog.Builder makeSelectionDialogBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
+                        makeSelectionDialogBuilder.setTitle(R.string.dialog_title_select_team);
+                        makeSelectionDialogBuilder.setPositiveButton(R.string.dialog_button_ok, null);
+                        makeSelectionDialogBuilder.show();
                 }
             }
         };

@@ -31,4 +31,5 @@
     <string name="dialog_button_confirm">Confirm</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_title_select_player">Please Select a Player</string>
+    <string name="dialog_message_pacman_confirm_team">You chose Pacman\'s team</string>
 </resources>
