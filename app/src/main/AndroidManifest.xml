@@ -29,6 +29,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${mapApiKeyValue}" />
 
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
+
         <activity
             android:name=".SpectatorActivity"
             android:label="@string/title_activity_map" />
