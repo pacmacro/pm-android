@@ -29,10 +29,11 @@ public class PelletManager {
     public PelletManager(PacMacroClient apiClient, InitializeCircleCallback mapCallback, GameController gameController) {
         this.mApiClient = apiClient;
         this.mMapCallback = mapCallback;
+        this.mGameController = gameController;
 
         EventBus.getDefault().register(this);
 
-        gameController.registerAction(new GameLoopAction() {
+        mGameController.registerAction(new GameLoopAction() {
             @Override
             public void execute() {
                 mApiClient.getPellets();

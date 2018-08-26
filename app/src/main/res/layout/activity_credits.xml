@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
         <ImageView
             android:layout_width="@dimen/pacman_icon_size"
             android:layout_height="@dimen/pacman_icon_size"
-            android:src="@drawable/pacman"
+            app:srcCompat="@drawable/pacman"
             android:onClick="onLogoClick"/>
         <TextView
             android:layout_width="wrap_content"
@@ -55,6 +56,6 @@
         android:layout_height="@dimen/sfu_icon_height"
         android:layout_gravity="center_horizontal"
         android:id="@+id/csssLogo"
-        android:src="@drawable/csss_logo"
+        app:srcCompat="@drawable/csss_logo"
         android:contentDescription="@string/csss_logo_content_description" />
 </LinearLayout>

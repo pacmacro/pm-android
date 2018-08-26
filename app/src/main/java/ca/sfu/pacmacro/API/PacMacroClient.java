@@ -30,6 +30,7 @@ import retrofit2.Retrofit;
  */
 public class PacMacroClient {
     private static final String TAG = "PacMacroClient";
+    private static final String BASE_URL = "http://pacmacro.herokuapp.com/";
 
     private Retrofit retrofit;
     private PacMacroService service;
@@ -40,7 +41,7 @@ public class PacMacroClient {
                 .registerTypeAdapter(PelletData.class, new PelletDeserializer())
                 .create();
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://pacmacro.herokuapp.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
