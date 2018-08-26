@@ -25,7 +25,7 @@ import ca.sfu.pacmacro.Model.Character;
 
 public class PlayerService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public final static int NOTIFICATION_ID = 1;
-    private static final long LOCATION_UPDATE_INTERVAL = 2000L;
+    private static final long LOCATION_UPDATE_INTERVAL = 5000L;
 
     private Character.CharacterType mSelectedCharacterType;
     private PacMacroClient mApiClient = new PacMacroClient();
