@@ -16,7 +16,7 @@ git clone https://github.com/pacmacro/pm-android
 
 Generate a [Google Maps SDK API key (step 1)](https://developers.google.com/maps/documentation/android-sdk/signup).
 
-In the file `app/build.gradle`, replace the value of the key `android.buildTypes.debug.manifestPlaceholders` the API key value.
+In the file `app/build.gradle`, replace the value of the key `android.buildTypes.debug.manifestPlaceholders` with the API key.
 
 Build and run the Android application on a physical or virtual device.
 
