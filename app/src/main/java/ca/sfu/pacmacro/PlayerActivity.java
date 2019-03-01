@@ -161,8 +161,10 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mGameController.stopLoop();
         mApiClient.deselectCharacter(mSelectedCharacterType);
+        Intent intent = new Intent(getApplicationContext(), PlayerService.class);
+        stopService(intent);
+        super.onDestroy();
     }
 }

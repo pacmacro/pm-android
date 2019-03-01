@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -48,7 +49,17 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
     @Override
     public void onCreate() {
         super.onCreate();
+        registerListeners();
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        int returnValue = super.onStartCommand(intent, flags, startId);
+        mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
+        return returnValue;
+    }
+
+    private void registerListeners() {
         mLocationListener = createLocationListener();
 
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
@@ -64,24 +75,27 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         Toast.makeText(PlayerService.this, "Service started", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        int returnValue = super.onStartCommand(intent, flags, startId);
-        mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
-        return returnValue;
+    private void unregisterListeners() {
+        try {
+            if(mGoogleApiClient.isConnected()) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
+                mPendingIntent.cancel();
+
+                mNotificationManager.cancel(NOTIFICATION_ID);
+                mGoogleApiClient.disconnect();
+                mLocationListener = null;
+            }
+
+        } catch (SecurityException ignored) {
+
+        }
     }
 
     @Override
     public void onDestroy() {
-        try {
-            Toast.makeText(PlayerService.this, "On Destroy called!!!!", Toast.LENGTH_SHORT).show();
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
-            mPendingIntent.cancel();
-            mNotificationManager.cancel(NOTIFICATION_ID);
-            mGoogleApiClient.disconnect();
-        } catch (SecurityException ignored) {
-
-        }
+        unregisterListeners();
+        Log.i(TAG, "onDestroy()");
+        super.onDestroy();
     }
 
     private Notification createNotification() {
@@ -118,6 +132,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         return new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                Log.i(TAG, "onLocationChanged location: " + location.toString());
                 updateLocation(location);
             }
         };
