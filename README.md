@@ -5,6 +5,8 @@
 Android mobile application for playing the game Pac Macro.  
 The official specification for the game can be found [here](https://github.com/pacmacro/pm-specification).
 
+[![System Architecture diagram](readme-img/system-architecture.png)](https://cloudcraft.co/view/e364e7e3-cdc5-48e8-9b5f-82d7ba0d95a6?key=BhmvffJBoBU73zAUh8X22A&embed=true)
+
 ## Setup
 
 Install [Android Studio](https://developer.android.com/studio/) and clone the project to your local machine:
