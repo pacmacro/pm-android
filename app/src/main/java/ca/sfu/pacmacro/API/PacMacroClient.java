@@ -84,17 +84,19 @@ public class PacMacroClient {
         Map<String, Double> latlngMap = new HashMap<>();
         latlngMap.put(JsonProperties.PROPERTY_LATITUDE, latitude);
         latlngMap.put(JsonProperties.PROPERTY_LONGITUDE, longitude);
-        service.setCharacterLocation(characterType.toString(), latlngMap).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Response<String> response) {
-                Log.v(TAG, "Set location success");
-            }
+        if(characterType!=null) {
+            service.setCharacterLocation(characterType.toString(), latlngMap).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Response<String> response) {
+                    Log.v(TAG, "Set location success");
+                }
 
-            @Override
-            public void onFailure(Throwable t) {
-                Log.v(TAG, "Set location failed: " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.v(TAG, "Set location failed: " + t.getMessage());
+                }
+            });
+        }
     }
 
     public void getPellets() {

@@ -1,12 +1,17 @@
 package ca.sfu.pacmacro;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -71,7 +76,11 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Notification notification = createNotification();
 
-        startForeground(NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startMyOwnForeground();
+        else
+            startForeground(NOTIFICATION_ID, notification);
+
         Toast.makeText(PlayerService.this, "Service started", Toast.LENGTH_SHORT).show();
     }
 
@@ -89,6 +98,31 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         } catch (SecurityException ignored) {
 
         }
+    }
+
+    @TargetApi(26)
+    private void startMyOwnForeground(){
+        Intent intent = new Intent(this, PlayerActivity.class);
+        mPendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        String NOTIFICATION_CHANNEL_ID = "ca.sfu.pacmacro";
+        String channelName = "PacMacro";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.pacman)
+                .setContentTitle(getString(R.string.player_service_notification_title))
+                .setContentText(getString(R.string.player_service_notification_text))
+                .setContentIntent(mPendingIntent)
+                .setPriority(Notification.PRIORITY_MIN)
+                .build();
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     @Override
