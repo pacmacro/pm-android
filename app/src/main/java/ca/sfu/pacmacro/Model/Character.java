@@ -80,6 +80,8 @@ public class Character {
     }
 
     public void updateMarkerVisibility(boolean isVisible) {
-        this.marker.setVisible(isVisible);
+        if(marker != null) {
+            this.marker.setVisible(isVisible);
+        }
     }
 }

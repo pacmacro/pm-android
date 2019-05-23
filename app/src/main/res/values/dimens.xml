@@ -10,5 +10,6 @@
     <dimen name="mobify_icon_width">357dp</dimen>
     <dimen name="sfu_icon_width">200dp</dimen>
     <dimen name="sfu_icon_height">100dp</dimen>
-    <dimen name="pacman_icon_size">90dp</dimen>
+    <dimen name="pacman_icon_size">60dp</dimen>
+
 </resources>
