@@ -59,9 +59,12 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int returnValue = super.onStartCommand(intent, flags, startId);
-        mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
-        return returnValue;
+        if(intent != null && intent.getExtras() != null) {
+            int returnValue = super.onStartCommand(intent, flags, startId);
+            mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
+            return returnValue;
+        }
+        return -1;
     }
 
     private void registerListeners() {

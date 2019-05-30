@@ -1,18 +1,28 @@
 package ca.sfu.pacmacro;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
@@ -27,9 +37,9 @@ public class PlayerActivity extends AppCompatActivity {
     private CharacterManager mCharacterManager;
     private GameController mGameController;
     private CharacterDisplayCriteria mDisplayCriteria;
-
     private Character.CharacterType mSelectedCharacterType;
     private Character mSelectedCharacter;
+    private AppCompatDialog gpsAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +102,7 @@ public class PlayerActivity extends AppCompatActivity {
             });
         }
 
+        registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
     }
 
     @Override
@@ -128,22 +139,34 @@ public class PlayerActivity extends AppCompatActivity {
         finish();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+
         if (requestCode == PERMISSION_RESPONSE_CODE) {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationService(mSelectedCharacterType);
             } else {
+                if(!shouldShowRequestPermissionRationale(permissions[0])){
+                    // When user clicked "Never ask again"
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Warning");
+                    builder.setMessage("Location permissions are required to play this game. Please visit Settings to allow the app to access this device's Location.");
+                    builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    builder.create().show();
 
-                // permission denied, boo! Disable the
-                // functionality that depends on this permission.
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Really?");
-                builder.create().show();
-                // TODO: real shit here
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_RESPONSE_CODE);
+                }
             }
         }
     }
@@ -159,12 +182,92 @@ public class PlayerActivity extends AppCompatActivity {
         mApiClient.updateCharacterState(character.getType(), characterState);
     }
 
+    @RequiresApi(api = 28)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showGpsDialog();
+    }
+
+    @RequiresApi(api = 28)
+    private void showGpsDialog() {
+        if(!isLocationEnabled(getApplicationContext())) {
+            if(gpsAlertDialog==null) {
+                gpsAlertDialog = createGpsAlertDialog();
+                gpsAlertDialog.show();
+            } else if (!gpsAlertDialog.isShowing()){
+                gpsAlertDialog.show();
+            }
+        } else {
+            if(gpsAlertDialog!=null)
+                gpsAlertDialog.dismiss();
+        }
+    }
+
+    private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
+        @RequiresApi(api = 28)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().matches(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                if(isLocationEnabled(getApplicationContext())) {
+                    if(gpsAlertDialog!=null)
+                        gpsAlertDialog.dismiss();
+                } else {
+                    showGpsDialog();
+                }
+            }
+        }
+    };
+
     @Override
     protected void onDestroy() {
         mGameController.stopLoop();
         mApiClient.deselectCharacter(mSelectedCharacterType);
         Intent intent = new Intent(getApplicationContext(), PlayerService.class);
         stopService(intent);
+        unregisterReceiver(gpsReceiver);
         super.onDestroy();
     }
+
+    @RequiresApi(api = 28)
+    public static Boolean isLocationEnabled(Context context)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // This is new method provided in API 28
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
+        } else {
+            // This is Deprecated in API 28
+            int mode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE,
+                    Settings.Secure.LOCATION_MODE_OFF);
+            return  (mode != Settings.Secure.LOCATION_MODE_OFF);
+
+        }
+    }
+
+    AppCompatDialog createGpsAlertDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PlayerActivity.this, R.style.Theme_AppCompat_Dialog);
+        dialogBuilder.setTitle("Warning");
+        dialogBuilder.setMessage("Location is required for this application. Please turn on Location on your device to continue playing.");
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("Go to setting", null)
+                .create();
+
+        AppCompatDialog alertDialog = dialogBuilder.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        return alertDialog;
+    }
 }
+
