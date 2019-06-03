@@ -119,4 +119,6 @@ public class CharacterManager {
         Character[] characters = new Character[mCharacterList.size()];
         return mCharacterList.toArray(characters);
     }
+
+
 }

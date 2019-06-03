@@ -32,4 +32,11 @@
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_title_select_player">Please Select a Player</string>
     <string name="dialog_message_pacman_confirm_team">You chose Pacman\'s team</string>
+
+    <!-- PlayerActivity -->
+    <string name="go_to_settings">Go to settings</string>
+    <string name="gps_alert_dialog_msg">Location is required for this application. Please turn on Location on yor device to continue playing.</string>
+    <string name="warning">Warning</string>
+    <string name="location_permission_dialog_msg">Location permissions are required to play this game. Please visit Settings to allow the app to access this device\'s Location.</string>
+    <string name="ok">Ok</string>
 </resources>
