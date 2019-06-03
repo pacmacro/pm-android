@@ -153,9 +153,9 @@ public class PlayerActivity extends AppCompatActivity {
                 if(!shouldShowRequestPermissionRationale(permissions[0])){
                     // When user clicked "Never ask again"
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Warning");
-                    builder.setMessage("Location permissions are required to play this game. Please visit Settings to allow the app to access this device's Location.");
-                    builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getApplicationContext().getString(R.string.warning));
+                    builder.setMessage(getApplicationContext().getString(R.string.location_permission_dialog_msg));
+                    builder.setNegativeButton(getApplicationContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
@@ -247,10 +247,10 @@ public class PlayerActivity extends AppCompatActivity {
 
     AppCompatDialog createGpsAlertDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PlayerActivity.this, R.style.Theme_AppCompat_Dialog);
-        dialogBuilder.setTitle("Warning");
-        dialogBuilder.setMessage("Location is required for this application. Please turn on Location on your device to continue playing.");
+        dialogBuilder.setTitle(getApplicationContext().getString(R.string.warning));
+        dialogBuilder.setMessage(getApplicationContext().getString(R.string.gps_alert_dialog_msg));
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setPositiveButton("Go to setting", null)
+        dialogBuilder.setPositiveButton(getApplicationContext().getString(R.string.go_to_settings), null)
                 .create();
 
         AppCompatDialog alertDialog = dialogBuilder.create();
