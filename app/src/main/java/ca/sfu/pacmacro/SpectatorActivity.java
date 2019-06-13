@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +41,8 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     private int PERMISSION_RESPONSE_CODE = 0;
     private String TAG = "SpectatorActivity";
 
+    private ImageView mTeamIcon;
+    private TextView mTeamScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,9 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
         mApiClient = new PacMacroClient();
         mGameController = new GameController();
+
+        mTeamIcon = (ImageView) findViewById(R.id.scoreIcon);
+        mTeamScore= (TextView) findViewById(R.id.scoreNum);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
