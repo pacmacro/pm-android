@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/homeBackground">
+    android:background="@drawable/home_background">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,30 +17,30 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/homePacman"
+                android:src="@drawable/home_pacman"
                 android:layout_marginEnd="25dp"/>
             <ImageView
                 android:layout_width="220dp"
                 android:layout_height="25dp"
-                android:src="@drawable/homeDots"
+                android:src="@drawable/home_dots"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/homeTitle"
+            android:src="@drawable/home_title"
             android:layout_marginTop="30dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/homePlayer"
+            android:src="@drawable/home_player"
             android:layout_marginTop="45dp"
             android:id="@+id/homePlayer"
             />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/homeSpectator"
+            android:src="@drawable/home_spectator"
             android:layout_marginTop="25dp"
             android:id="@+id/homeSpectator"
             />
@@ -55,13 +55,13 @@
             <ImageView
                 android:layout_width="220dp"
                 android:layout_height="25dp"
-                android:src="@drawable/homeDots"
+                android:src="@drawable/home_dots"
                 android:layout_gravity="center"/>
 
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/homeGhost"
+                android:src="@drawable/home_ghost"
                 android:layout_marginStart="25dp"/>
         </LinearLayout>
         <ImageView
@@ -69,7 +69,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:id="@+id/homeCredit"
-            android:src="@drawable/homeCredits"/>
+            android:src="@drawable/home_credits"/>
     </LinearLayout>
 
 </FrameLayout>
