@@ -32,7 +32,6 @@
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_title_select_player">Please Select a Player</string>
     <string name="dialog_message_pacman_confirm_team">You chose Pacman\'s team</string>
-    <string name="home_credit"> <u>Credit</u> </string>
 
     <!-- PlayerActivity -->
     <string name="go_to_settings">Go to settings</string>
