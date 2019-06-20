@@ -11,8 +11,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.support.v7.app.AlertDialog;
 
+import ca.sfu.pacmacro.Model.Character;
+
 public class PlayerFragment extends Fragment implements View.OnClickListener{
     private ImageView mPacman, mBlinky, mPinky, mInky, mClyde, mGo;
+    private Character.CharacterType selectedCharacter = null;
+    private boolean isPlayerSelected = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,39 +39,52 @@ public class PlayerFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Character.CharacterType selectedCharacter = null;
-        int selectedCharacterId = characterSelection.getCheckedRadioButtonId();
-        boolean isPlayerSelected = true;
-        switch (selectedCharacterId) {
-            case R.id.character_pacman:
-                selectedCharacter = Character.CharacterType.PACMAN;
-                break;
-            case R.id.character_inky:
-                selectedCharacter = Character.CharacterType.INKY;
-                break;
-            case R.id.character_blinky:
-                selectedCharacter = Character.CharacterType.BLINKY;
-                break;
-            case R.id.character_pinky:
-                selectedCharacter = Character.CharacterType.PINKY;
-                break;
-            case R.id.character_clyde:
-                selectedCharacter = Character.CharacterType.CLYDE;
-                break;
-            default:
-                isPlayerSelected = false;
-
-                AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(PlayerFragment.this.getContext());
-                makeSelectionBuilder.setTitle(R.string.dialog_title_select_player);
-                makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
-                makeSelectionBuilder.show();
+        int selectedCharacterId = v.getId();
+        if(selectedCharacterId!=R.id.player_go && isPlayerSelected){
+            mPacman.setImageResource(R.drawable.pacman_button);
+            mBlinky.setImageResource(R.drawable.blinky_button);
+            mPinky.setImageResource(R.drawable.pinky_button);
+            mInky.setImageResource(R.drawable.inky_button);
+            mClyde.setImageResource(R.drawable.clyde_button);
         }
-
-        if (isPlayerSelected) {
-            Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), PlayerActivity.class);
-            intent.putExtra("Character", selectedCharacter);
-            startActivity(intent);
+        switch (selectedCharacterId) {
+            case R.id.player_pacman:
+                selectedCharacter = Character.CharacterType.PACMAN;
+                isPlayerSelected = true;
+                ((ImageView)v).setImageResource(R.drawable.pacman_selected);
+                break;
+            case R.id.player_inky:
+                selectedCharacter = Character.CharacterType.INKY;
+                isPlayerSelected = true;
+                ((ImageView)v).setImageResource(R.drawable.inky_selected);
+                break;
+            case R.id.player_blinky:
+                selectedCharacter = Character.CharacterType.BLINKY;
+                isPlayerSelected = true;
+                ((ImageView)v).setImageResource(R.drawable.blinky_selected);
+                break;
+            case R.id.player_pinky:
+                selectedCharacter = Character.CharacterType.PINKY;
+                isPlayerSelected = true;
+                ((ImageView)v).setImageResource(R.drawable.pinky_selected);
+                break;
+            case R.id.player_clyde:
+                selectedCharacter = Character.CharacterType.CLYDE;
+                ((ImageView)v).setImageResource(R.drawable.clyde_selected);
+                break;
+            case R.id.player_go:
+                if (isPlayerSelected) {
+                    Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), PlayerActivity.class);
+                    intent.putExtra("Character", selectedCharacter);
+                    startActivity(intent);
+                }else{
+                    AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(PlayerFragment.this.getContext());
+                    makeSelectionBuilder.setTitle(R.string.dialog_title_select_player);
+                    makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
+                    makeSelectionBuilder.show();
+                }
+                break;
         }
     }
 

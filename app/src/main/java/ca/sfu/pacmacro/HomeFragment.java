@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //pending til fragment completed
-                //((LobbyActivity)getActivity()).changeFrame(new PlayerFragment());
+                ((LobbyActivity)getActivity()).changeFrame(new PlayerFragment());
             }
         });
         mSpectator = view.findViewById(R.id.homeSpectator);
