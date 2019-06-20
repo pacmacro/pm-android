@@ -41,6 +41,7 @@
             android:layout_height="0dp"
             android:src="@drawable/home_player"
             android:layout_marginTop="45dp"
+            android:layout_marginHorizontal="25dp"
             android:id="@+id/homePlayer"
             android:layout_weight="5"
             />
@@ -49,6 +50,7 @@
             android:layout_height="0dp"
             android:src="@drawable/home_spectator"
             android:layout_marginTop="25dp"
+            android:layout_marginHorizontal="25dp"
             android:id="@+id/homeSpectator"
             android:layout_weight="5"
             />
@@ -77,9 +79,9 @@
                 android:layout_weight="3"/>
         </LinearLayout>
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="12dp"
             android:id="@+id/homeCredit"
             android:src="@drawable/home_credits"
             android:layout_weight="3"/>

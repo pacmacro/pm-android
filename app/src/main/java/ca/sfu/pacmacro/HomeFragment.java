@@ -29,7 +29,6 @@ public class HomeFragment extends Fragment {
         mPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //pending til fragment completed
                 ((LobbyActivity)getActivity()).changeFrame(new PlayerFragment());
             }
         });
@@ -37,8 +36,7 @@ public class HomeFragment extends Fragment {
         mSpectator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //pending til fragment completed
-                //((LobbyActivity)getActivity()).changeFrame(new SpectatorFragment());
+                ((LobbyActivity)getActivity()).changeFrame(new SpectatorFragment());
             }
         });
         mCredit = view.findViewById(R.id.homeCredit);
