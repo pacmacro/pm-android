@@ -15,7 +15,7 @@
             android:orientation="horizontal"
             android:gravity="end"
             android:layout_marginTop="50dp"
-            android:layout_weight="5"
+            android:layout_weight="6"
             android:weightSum="14">
             <ImageView
                 android:layout_width="0dp"
@@ -37,20 +37,20 @@
             android:layout_marginTop="30dp"
             android:layout_weight="5"/>
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/home_player"
             android:layout_marginTop="45dp"
             android:id="@+id/homePlayer"
-            android:layout_weight="6"
+            android:layout_weight="5"
             />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/home_spectator"
             android:layout_marginTop="25dp"
             android:id="@+id/homeSpectator"
-            android:layout_weight="6"
+            android:layout_weight="5"
             />
 
         <LinearLayout
@@ -58,8 +58,8 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:gravity="start"
-            android:layout_marginTop="40dp"
-            android:layout_weight="5"
+            android:layout_marginTop="35dp"
+            android:layout_weight="6"
             android:weightSum="14">
 
             <ImageView

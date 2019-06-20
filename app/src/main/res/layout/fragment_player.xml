@@ -22,20 +22,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="35dp"
             android:weightSum="10"
             android:layout_weight="2">
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/pacman_button"
                 android:id="@+id/player_pacman"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/blinky_button"
                 android:id="@+id/player_blinky"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
         </LinearLayout>
         <LinearLayout
@@ -43,19 +46,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
             android:weightSum="10"
             android:layout_weight="2">
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/pinky_button"
                 android:id="@+id/player_pinky"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/inky_button"
                 android:id="@+id/player_inky"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
         </LinearLayout>
         <LinearLayout
@@ -63,19 +69,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
             android:weightSum="10"
             android:layout_weight="2">
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/clyde_button"
                 android:id="@+id/player_clyde"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/go_button"
                 android:id="@+id/player_go"
+                android:layout_marginHorizontal="4dp"
                 android:layout_weight="4"/>
         </LinearLayout>
     </LinearLayout>
