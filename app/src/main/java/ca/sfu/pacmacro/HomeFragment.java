@@ -1,4 +1,4 @@
-package ca.sfu.pacmacro.Model;
+package ca.sfu.pacmacro;
 
 import android.content.Intent;
 import android.os.Bundle;

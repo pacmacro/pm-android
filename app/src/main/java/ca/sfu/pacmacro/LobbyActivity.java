@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import ca.sfu.pacmacro.Model.HomeFragment;
-
 public class LobbyActivity extends AppCompatActivity {
 
     @Override
