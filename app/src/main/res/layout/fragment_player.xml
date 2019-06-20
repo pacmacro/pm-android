@@ -7,68 +7,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:weightSum="11">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="35dp"
-            android:src="@drawable/character_title"/>
+            android:src="@drawable/character_title"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_weight="2"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginTop="35dp">
+            android:layout_marginTop="35dp"
+            android:weightSum="10"
+            android:layout_weight="2">
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/pacman_button"
-                android:id="@+id/player_pacman"/>
+                android:id="@+id/player_pacman"
+                android:layout_weight="4"/>
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/blinky_button"
-                android:id="@+id/player_blinky"/>
+                android:id="@+id/player_blinky"
+                android:layout_weight="4"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginTop="8dp">
+            android:weightSum="10"
+            android:layout_weight="2">
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/pinky_button"
-                android:id="@+id/player_pinky"/>
+                android:id="@+id/player_pinky"
+                android:layout_weight="4"/>
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/inky_button"
-                android:id="@+id/player_inky"/>
+                android:id="@+id/player_inky"
+                android:layout_weight="4"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginTop="8dp">
+            android:weightSum="10"
+            android:layout_weight="2">
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/clyde_button"
-                android:id="@+id/player_clyde"/>
+                android:id="@+id/player_clyde"
+                android:layout_weight="4"/>
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:src="@drawable/go_button"
-                android:id="@+id/player_go"/>
+                android:id="@+id/player_go"
+                android:layout_weight="4"/>
         </LinearLayout>
     </LinearLayout>
 
