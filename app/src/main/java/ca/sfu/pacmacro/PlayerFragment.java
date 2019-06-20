@@ -1,6 +1,8 @@
 package ca.sfu.pacmacro;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.support.v7.app.AlertDialog;
 
 import ca.sfu.pacmacro.Model.Character;
 
@@ -33,7 +34,12 @@ public class PlayerFragment extends Fragment implements View.OnClickListener{
         mClyde.setOnClickListener(this);
         mGo = view.findViewById(R.id.player_go);
         mGo.setOnClickListener(this);
-
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);  //grayscale
+        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+        mGo.setColorFilter(cf);
+        mGo.setImageAlpha(128);
+        mGo.setClickable(false);
         return view;
     }
 
@@ -50,22 +56,18 @@ public class PlayerFragment extends Fragment implements View.OnClickListener{
         switch (selectedCharacterId) {
             case R.id.player_pacman:
                 selectedCharacter = Character.CharacterType.PACMAN;
-                isPlayerSelected = true;
                 ((ImageView)v).setImageResource(R.drawable.pacman_selected);
                 break;
             case R.id.player_inky:
                 selectedCharacter = Character.CharacterType.INKY;
-                isPlayerSelected = true;
                 ((ImageView)v).setImageResource(R.drawable.inky_selected);
                 break;
             case R.id.player_blinky:
                 selectedCharacter = Character.CharacterType.BLINKY;
-                isPlayerSelected = true;
                 ((ImageView)v).setImageResource(R.drawable.blinky_selected);
                 break;
             case R.id.player_pinky:
                 selectedCharacter = Character.CharacterType.PINKY;
-                isPlayerSelected = true;
                 ((ImageView)v).setImageResource(R.drawable.pinky_selected);
                 break;
             case R.id.player_clyde:
@@ -73,18 +75,17 @@ public class PlayerFragment extends Fragment implements View.OnClickListener{
                 ((ImageView)v).setImageResource(R.drawable.clyde_selected);
                 break;
             case R.id.player_go:
-                if (isPlayerSelected) {
-                    Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getContext(), PlayerActivity.class);
-                    intent.putExtra("Character", selectedCharacter);
-                    startActivity(intent);
-                }else{
-                    AlertDialog.Builder makeSelectionBuilder = new AlertDialog.Builder(PlayerFragment.this.getContext());
-                    makeSelectionBuilder.setTitle(R.string.dialog_title_select_player);
-                    makeSelectionBuilder.setPositiveButton(R.string.dialog_button_ok, null);
-                    makeSelectionBuilder.show();
-                }
+                Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), PlayerActivity.class);
+                intent.putExtra("Character", selectedCharacter);
+                startActivity(intent);
                 break;
+        }
+        if(!isPlayerSelected){
+            mGo.setColorFilter(null);
+            mGo.setImageAlpha(255);
+            mGo.setClickable(true);
+            isPlayerSelected=true;
         }
     }
 

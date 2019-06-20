@@ -1,6 +1,8 @@
 package ca.sfu.pacmacro;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,6 +32,12 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
         mGhost.setOnClickListener(this);
         mGo = view.findViewById(R.id.team_go);
         mGo.setOnClickListener(this);
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);  //grayscale
+        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+        mGo.setColorFilter(cf);
+        mGo.setImageAlpha(128);
+        mGo.setClickable(false);
         return view;
     }
 
@@ -42,30 +50,27 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
         }
         switch(teamId) {
             case R.id.team_ghost:
-                mSelected = true;
                 mTeam=CharacterDisplayCriteria.CRITERIA_GHOST_TEAM;
                 mGhost.setImageResource(R.drawable.ghosts_selected);
                 break;
             case R.id.team_pacman:
-                mSelected = true;
                 mTeam=CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM;
                 mPacman.setImageResource(R.drawable.pacman_button_long_selected);
                 break;
             case R.id.team_go:
-                if(mSelected){
-                    if(mTeam==CharacterDisplayCriteria.CRITERIA_GHOST_TEAM){
-                        Toast.makeText(getContext(),"You are on the ghosts' team.", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getContext(),"You are on Pacman's team, good luck!", Toast.LENGTH_SHORT).show();
-                    }
-                    goToSpectatorActivity(mTeam);
+                if(mTeam==CharacterDisplayCriteria.CRITERIA_GHOST_TEAM){
+                    Toast.makeText(getContext(),"You are on the ghosts' team.", Toast.LENGTH_SHORT).show();
                 }else{
-                    AlertDialog.Builder makeSelectionDialogBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
-                    makeSelectionDialogBuilder.setTitle(R.string.dialog_title_select_team);
-                    makeSelectionDialogBuilder.setPositiveButton(R.string.dialog_button_ok, null);
-                    makeSelectionDialogBuilder.show();
+                    Toast.makeText(getContext(),"You are on Pacman's team, good luck!", Toast.LENGTH_SHORT).show();
                 }
+                goToSpectatorActivity(mTeam);
                 break;
+        }
+        if(!mSelected){
+            mGo.setColorFilter(null);
+            mGo.setImageAlpha(255);
+            mGo.setClickable(true);
+            mSelected=true;
         }
     }
 
