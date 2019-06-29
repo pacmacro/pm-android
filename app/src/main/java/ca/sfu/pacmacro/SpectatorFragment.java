@@ -6,7 +6,6 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +58,9 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.team_go:
                 if(mTeam==CharacterDisplayCriteria.CRITERIA_GHOST_TEAM){
-                    Toast.makeText(getContext(),"You are on the ghosts' team.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"You are on the ghosts' team, Have fun!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getContext(),"You are on Pacman's team, good luck!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"You are on the Pacman's team, good luck!", Toast.LENGTH_SHORT).show();
                 }
                 goToSpectatorActivity(mTeam);
                 break;
@@ -73,51 +72,6 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
             mSelected=true;
         }
     }
-
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_spectator, container, false);
-
-        MaterialRadioGroup teamSelection = (MaterialRadioGroup) view.findViewById(R.id.team_selection);
-
-        Button startButton = (Button) view.findViewById(R.id.spectator_start);
-        startButton.setOnClickListener(getStartButtonListener(teamSelection));
-
-        return view;
-    }
-
-    public View.OnClickListener getStartButtonListener(final MaterialRadioGroup teamSelection) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int teamId = teamSelection.getCheckedRadioButtonId();
-                switch(teamId) {
-                    case R.id.team_ghost:
-                        goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_GHOST_TEAM);
-                        break;
-                    case R.id.team_pacman:
-                        AlertDialog.Builder confirmSelectionDialogBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
-                        confirmSelectionDialogBuilder.setTitle(R.string.dialog_title_confirm_team);
-                        confirmSelectionDialogBuilder.setMessage(R.string.dialog_message_pacman_confirm_team);
-                        confirmSelectionDialogBuilder.setNegativeButton(R.string.dialog_button_cancel, null);
-                        confirmSelectionDialogBuilder.setPositiveButton(R.string.dialog_button_confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                goToSpectatorActivity(CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM);
-                            }
-                        });
-                        confirmSelectionDialogBuilder.show();
-                        break;
-                    default:
-                        AlertDialog.Builder makeSelectionDialogBuilder = new AlertDialog.Builder(SpectatorFragment.this.getContext());
-                        makeSelectionDialogBuilder.setTitle(R.string.dialog_title_select_team);
-                        makeSelectionDialogBuilder.setPositiveButton(R.string.dialog_button_ok, null);
-                        makeSelectionDialogBuilder.show();
-                }
-            }
-        };
-    }*/
 
     private void goToSpectatorActivity(int selectedTeam) {
         Intent intent = new Intent(getContext(), SpectatorActivity.class);
