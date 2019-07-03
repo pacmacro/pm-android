@@ -54,7 +54,7 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.team_pacman:
                 mTeam=CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM;
-                mPacman.setImageResource(R.drawable.pacman_button_long_selected);
+                mPacman.setImageResource(R.drawable.pacman_selected_long);
                 break;
             case R.id.team_go:
                 if(mTeam==CharacterDisplayCriteria.CRITERIA_GHOST_TEAM){
