@@ -1,5 +1,6 @@
 package ca.sfu.pacmacro;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -54,15 +57,17 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         mApiClient = new PacMacroClient();
         mGameController = new GameController();
 
-        mTeamIcon = (ImageView) findViewById(R.id.scoreIcon);
-        mTeamScore= (TextView) findViewById(R.id.scoreNum);
+        mTeamIcon = findViewById(R.id.scoreIcon);
+        if(team!=CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM){
+            mTeamIcon.setImageResource(R.drawable.home_ghost);
+        }
+        mTeamScore= findViewById(R.id.scoreNum);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -78,6 +83,20 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         mMap = googleMap;
 
         centerMap();
+
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.style_json));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
 
         InitializeMarkerCallback characterMarkerCallback = new InitializeMarkerCallback() {
             @Override
@@ -95,9 +114,9 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         InitializeCircleCallback pelletCircleCallback = new InitializeCircleCallback() {
             @Override
             public Circle initializeCircle(LatLng latLng, boolean isPowerPill) {
-                int radius = 6;
+                int radius = 12;
                 if (isPowerPill) {
-                    radius = 18;
+                    radius = 24;
                 }
 
                 CircleOptions circleOptions = new CircleOptions()
