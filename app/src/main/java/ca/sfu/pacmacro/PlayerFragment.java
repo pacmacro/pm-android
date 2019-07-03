@@ -1,38 +1,96 @@
 package ca.sfu.pacmacro;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import net.soulwolf.widget.materialradio.MaterialRadioGroup;
 
 import ca.sfu.pacmacro.Model.Character;
 
-
-public class PlayerFragment extends Fragment {
-
-//    private OnFragmentInteractionListener mListener;
-
-    public PlayerFragment() {
-        // Required empty public constructor
-    }
-
-    public static PlayerFragment newInstance() {
-        return new PlayerFragment();
+public class PlayerFragment extends Fragment implements View.OnClickListener{
+    private ImageView mPacman, mBlinky, mPinky, mInky, mClyde, mGo;
+    private Character.CharacterType selectedCharacter = null;
+    private boolean isPlayerSelected = false;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_player, container, false);
+        mPacman = view.findViewById(R.id.player_pacman);
+        mPacman.setOnClickListener(this);
+        mBlinky = view.findViewById(R.id.player_blinky);
+        mBlinky.setOnClickListener(this);
+        mPinky = view.findViewById(R.id.player_pinky);
+        mPinky.setOnClickListener(this);
+        mInky = view.findViewById(R.id.player_inky);
+        mInky.setOnClickListener(this);
+        mClyde = view.findViewById(R.id.player_clyde);
+        mClyde.setOnClickListener(this);
+        mGo = view.findViewById(R.id.player_go);
+        mGo.setOnClickListener(this);
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);  //grayscale
+        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+        mGo.setColorFilter(cf);
+        mGo.setImageAlpha(128);
+        mGo.setClickable(false);
+        return view;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onClick(View v) {
+        int selectedCharacterId = v.getId();
+        if(selectedCharacterId!=R.id.player_go && isPlayerSelected){
+            mPacman.setImageResource(R.drawable.pacman_button);
+            mBlinky.setImageResource(R.drawable.blinky_button);
+            mPinky.setImageResource(R.drawable.pinky_button);
+            mInky.setImageResource(R.drawable.inky_button);
+            mClyde.setImageResource(R.drawable.clyde_button);
+        }
+        switch (selectedCharacterId) {
+            case R.id.player_pacman:
+                selectedCharacter = Character.CharacterType.PACMAN;
+                ((ImageView)v).setImageResource(R.drawable.pacman_selected);
+                break;
+            case R.id.player_inky:
+                selectedCharacter = Character.CharacterType.INKY;
+                ((ImageView)v).setImageResource(R.drawable.inky_selected);
+                break;
+            case R.id.player_blinky:
+                selectedCharacter = Character.CharacterType.BLINKY;
+                ((ImageView)v).setImageResource(R.drawable.blinky_selected);
+                break;
+            case R.id.player_pinky:
+                selectedCharacter = Character.CharacterType.PINKY;
+                ((ImageView)v).setImageResource(R.drawable.pinky_selected);
+                break;
+            case R.id.player_clyde:
+                selectedCharacter = Character.CharacterType.CLYDE;
+                ((ImageView)v).setImageResource(R.drawable.clyde_selected);
+                break;
+            case R.id.player_go:
+                Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), PlayerActivity.class);
+                intent.putExtra("Character", selectedCharacter);
+                startActivity(intent);
+                break;
+        }
+        if(!isPlayerSelected){
+            mGo.setColorFilter(null);
+            mGo.setImageAlpha(255);
+            mGo.setClickable(true);
+            isPlayerSelected=true;
+        }
     }
 
+
+    /*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,37 +145,5 @@ public class PlayerFragment extends Fragment {
                 }
             }
         };
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    }*/
 }
