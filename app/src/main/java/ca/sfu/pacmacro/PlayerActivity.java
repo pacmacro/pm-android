@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,16 +15,15 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
-import android.util.Log;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
@@ -144,32 +144,43 @@ public class PlayerActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-
-        if (requestCode == PERMISSION_RESPONSE_CODE) {
-            // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startLocationService(mSelectedCharacterType);
-            } else {
-                if(!shouldShowRequestPermissionRationale(permissions[0])){
-                    // When user clicked "Never ask again"
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle(getApplicationContext().getString(R.string.warning));
-                    builder.setMessage(getApplicationContext().getString(R.string.location_permission_dialog_msg));
-                    builder.setNegativeButton(getApplicationContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-                    builder.create().show();
-
+        try {
+            if (requestCode == PERMISSION_RESPONSE_CODE) {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startLocationService(mSelectedCharacterType);
                 } else {
-                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_RESPONSE_CODE);
+                    if (!shouldShowRequestPermissionRationale(permissions[0])) {
+                        // When user clicked "Never ask again"
+                        showLocationPermissionDialog();
+                    } else {
+                        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_RESPONSE_CODE);
+                    }
                 }
             }
+        } catch (Exception e ) {
+            e.printStackTrace();
         }
+    }
+
+    void showLocationPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
+        String message = getApplicationContext().getString(R.string.location_permission_dialog_msg);
+        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(message);
+        ssBuilder.setSpan(new ForegroundColorSpan(Color.RED), message.indexOf("Settings"), message.indexOf("Settings") + String.valueOf("Settings").length(),
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        builder.setTitle(getApplicationContext().getString(R.string.warning));
+        builder.setMessage(ssBuilder);
+        builder.setNegativeButton(getApplicationContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void startLocationService(Character.CharacterType characterType) {
