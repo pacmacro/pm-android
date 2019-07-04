@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsActivity extends BaseActivity {
     SharedPreferences preferences;
     int clickCount = 0;
 

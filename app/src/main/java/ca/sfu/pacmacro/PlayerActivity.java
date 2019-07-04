@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
@@ -30,7 +31,7 @@ import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Model.Character;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends BaseActivity {
     private static final int PERMISSION_RESPONSE_CODE = 1;
 
     private PacMacroClient mApiClient;

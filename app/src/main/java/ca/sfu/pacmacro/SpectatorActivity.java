@@ -29,7 +29,7 @@ import ca.sfu.pacmacro.Controller.InitializeCircleCallback;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
 import ca.sfu.pacmacro.Controller.PelletManager;
 
-public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SpectatorActivity extends BaseActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private PacMacroClient mApiClient;
