@@ -32,6 +32,8 @@ import ca.sfu.pacmacro.Controller.InitializeCircleCallback;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
 import ca.sfu.pacmacro.Controller.PelletManager;
 
+import static android.graphics.Color.rgb;
+
 public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -114,17 +116,29 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         InitializeCircleCallback pelletCircleCallback = new InitializeCircleCallback() {
             @Override
             public Circle initializeCircle(LatLng latLng, boolean isPowerPill) {
-                int radius = 12;
+                int radius = 10;
+                int color = rgb(130,190,255);
+                int colorStroke=rgb(215,235,255);
+                CircleOptions circleOptions;
                 if (isPowerPill) {
                     radius = 24;
+                    color = rgb(50,150,255);
+                    colorStroke=rgb(180,215,255);
+                    circleOptions = new CircleOptions()
+                            .center(latLng)
+                            .radius(radius)
+                            .fillColor(color)
+                            .strokeColor(colorStroke)
+                            .strokeWidth(10.0f);
+                }else{
+                    circleOptions = new CircleOptions()
+                            .center(latLng)
+                            .radius(radius)
+                            .fillColor(color)
+                            .strokeColor(colorStroke)
+                            .strokeWidth(7.0f);
                 }
 
-                CircleOptions circleOptions = new CircleOptions()
-                        .center(latLng)
-                        .radius(radius)
-                        .fillColor(Color.WHITE)
-                        .strokeColor(Color.BLACK)
-                        .strokeWidth(5.0f);
                 return mMap.addCircle(circleOptions);
             }
         };
