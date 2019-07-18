@@ -31,6 +31,8 @@ import ca.sfu.pacmacro.Controller.GameController;
 import ca.sfu.pacmacro.Controller.InitializeCircleCallback;
 import ca.sfu.pacmacro.Controller.InitializeMarkerCallback;
 import ca.sfu.pacmacro.Controller.PelletManager;
+import ca.sfu.pacmacro.Controller.ScoreCallBack;
+import ca.sfu.pacmacro.Controller.ScoreManager;
 
 import static android.graphics.Color.rgb;
 
@@ -41,10 +43,12 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
     private CharacterManager mCharacterManager;
     private CharacterDisplayCriteria mDisplayCriteria;
     private PelletManager mPelletManager;
+    private ScoreManager mScoreManager;
     private GameController mGameController;
 
     private int PERMISSION_RESPONSE_CODE = 0;
     private String TAG = "SpectatorActivity";
+    private boolean isPacman = true;
 
     private ImageView mTeamIcon;
     private TextView mTeamScore;
@@ -62,8 +66,21 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         mTeamIcon = findViewById(R.id.scoreIcon);
         if(team!=CharacterDisplayCriteria.CRITERIA_PACMAN_TEAM){
             mTeamIcon.setImageResource(R.drawable.home_ghost);
+            isPacman=false;
         }
         mTeamScore= findViewById(R.id.scoreNum);
+        ScoreCallBack scoreCallBack = new ScoreCallBack() {
+            @Override
+            public void ScoreCallBack(Integer score) {
+                if(isPacman || score==0){
+                    mTeamScore.setText(score.toString());
+                }else{
+                    mTeamScore.setText("- " + score.toString());
+                }
+
+            }
+        };
+        mScoreManager = new ScoreManager(mApiClient, scoreCallBack, mGameController);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
