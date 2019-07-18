@@ -3,13 +3,13 @@ package ca.sfu.pacmacro.API.events;
 import com.google.gson.JsonObject;
 
 public class ScoreReceivedEvent {
-    JsonObject scoreList;
+    JsonObject score;
 
     public ScoreReceivedEvent(JsonObject scoreList){
-        this.scoreList = scoreList;
+        this.score = scoreList;
     }
 
-    public String getScoreList() {
-        return scoreList.remove("score").getAsString();
+    public int getScore() {
+        return score.remove("score").getAsInt();
     }
 }

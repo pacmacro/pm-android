@@ -5,9 +5,6 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.API.events.ScoreReceivedEvent;
 
@@ -15,7 +12,7 @@ public class ScoreManager {
     private static final String TAG = "ScoreManager";
     private PacMacroClient mApiClient;
     private ScoreCallBack mCallBack;
-    private String mScoreList;
+    private int mScore;
     private GameController mGameController;
 
     public ScoreManager(PacMacroClient apiClient,ScoreCallBack scoreCallBack, GameController gameController){
@@ -36,10 +33,10 @@ public class ScoreManager {
 
     @Subscribe
     public void onScoreRecieved(ScoreReceivedEvent event){
-        String score = event.getScoreList();
+        int score = event.getScore();
         mCallBack.ScoreCallBack(score);
         Log.v(TAG, "Received score of " + score);
-        mScoreList = score;
+        mScore = score;
     }
 
 }

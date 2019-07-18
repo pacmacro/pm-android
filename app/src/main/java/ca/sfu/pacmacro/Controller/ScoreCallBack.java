@@ -1,5 +1,5 @@
 package ca.sfu.pacmacro.Controller;
 
 public interface ScoreCallBack {
-    void ScoreCallBack(String score);
+    void ScoreCallBack(Integer score);
 }

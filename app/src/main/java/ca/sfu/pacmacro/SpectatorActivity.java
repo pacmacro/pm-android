@@ -71,11 +71,11 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
         mTeamScore= findViewById(R.id.scoreNum);
         ScoreCallBack scoreCallBack = new ScoreCallBack() {
             @Override
-            public void ScoreCallBack(String score) {
-                if(isPacman || score.equals("0")){
-                    mTeamScore.setText(score);
+            public void ScoreCallBack(Integer score) {
+                if(isPacman || score==0){
+                    mTeamScore.setText(score.toString());
                 }else{
-                    mTeamScore.setText("- " + score);
+                    mTeamScore.setText("-1" + score.toString());
                 }
 
             }
