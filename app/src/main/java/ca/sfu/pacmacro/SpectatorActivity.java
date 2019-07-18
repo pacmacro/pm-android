@@ -75,7 +75,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
                 if(isPacman || score==0){
                     mTeamScore.setText(score.toString());
                 }else{
-                    mTeamScore.setText("-1" + score.toString());
+                    mTeamScore.setText("- " + score.toString());
                 }
 
             }

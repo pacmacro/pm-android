@@ -10,6 +10,7 @@ public class ScoreReceivedEvent {
     }
 
     public int getScore() {
-        return score.remove("score").getAsInt();
+        JsonObject temp = score.deepCopy();
+        return temp.remove("score").getAsInt();
     }
 }
