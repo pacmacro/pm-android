@@ -49,6 +49,10 @@ public interface PacMacroService {
     @GET("gamestate/score")
     Call<JsonObject> getScore();
 
+    @Headers("Content-Type: application/json")
+    @GET("gamestate")
+    Call<JsonObject> getGameState();
+
     @GET("pacdots")
     Call<List<PelletData>> getPellets();
 
