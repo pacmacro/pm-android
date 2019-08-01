@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,11 +21,10 @@ import android.support.v7.app.AppCompatDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.graphics.Color;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
@@ -96,8 +96,18 @@ public class PlayerActivity extends AppCompatActivity {
 
         GameStateCallback gameStateCallback = new GameStateCallback() {
             @Override
-            public void GameStateCallback(String GameState) {
-                mGameState.setText(GameState);
+            public void GameStateCallback(int type, String GameState) {
+                if (type==0){
+                    mGameState.setText(GameState);
+                }
+                else{
+                    mPacmanState.setText(GameState);
+                    if(GameState.compareTo("POWERUP")==0){
+                        mPacmanState.setTextColor(0xFFFF5555);
+                    }else{
+                        mPacmanState.setTextColor(0xFFFFFFFF);
+                    }
+                }
             }
         };
         GameStateManager gameStateManager = new GameStateManager(mApiClient, gameStateCallback, mGameController);
