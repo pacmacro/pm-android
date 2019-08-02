@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:textSize="36sp"
             android:layout_marginVertical="4dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_marginHorizontal="8dp"
             android:textColor="#FFFFFF"
             android:text="00"
             android:id="@+id/scoreNum"/>

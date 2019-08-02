@@ -15,6 +15,7 @@ import java.util.Map;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateSentEvent;
 import ca.sfu.pacmacro.API.events.CharactersReceivedEvent;
+import ca.sfu.pacmacro.API.events.GameStateReceivedEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
 import ca.sfu.pacmacro.API.events.ScoreReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
@@ -94,6 +95,23 @@ public class PacMacroClient {
             @Override
             public void onFailure(Throwable t) {
                 Log.v(TAG, "get score failed: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getGameState() {
+        Call<JsonObject> getScore = service.getGameState();
+
+        getScore.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Response<JsonObject> response) {
+                EventBus.getDefault().post(new GameStateReceivedEvent(response.body()));
+                //Log.v(TAG, "GameState responded");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.v(TAG, "get GameState failed: " + t.getMessage());
             }
         });
     }
