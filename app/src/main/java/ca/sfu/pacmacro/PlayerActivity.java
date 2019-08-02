@@ -254,12 +254,13 @@ public class PlayerActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PlayerActivity.this, R.style.Theme_AppCompat_Dialog);
         dialogBuilder.setTitle(getApplicationContext().getString(R.string.warning));
         dialogBuilder.setMessage(getApplicationContext().getString(R.string.gps_alert_dialog_msg));
-        dialogBuilder.setCancelable(true);
+        dialogBuilder.setCancelable(false);
         dialogBuilder.setPositiveButton(getApplicationContext().getString(R.string.go_to_settings), null)
                 .create();
-        dialogBuilder.setNegativeButton("Do nothing",
+        dialogBuilder.setNegativeButton("Go Back",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        stopPlaying();
                         dialog.cancel();
                     }
                 });
