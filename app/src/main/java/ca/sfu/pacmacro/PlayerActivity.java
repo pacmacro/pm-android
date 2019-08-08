@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.graphics.Color;
+import android.os.Vibrator;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
@@ -47,6 +47,7 @@ public class PlayerActivity extends AppCompatActivity {
     private AppCompatDialog gpsAlertDialog;
     private boolean isPacman = true;
     private TextView mGameState, mPacmanState, mScore;
+    private int scoreRecord = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,11 @@ public class PlayerActivity extends AppCompatActivity {
                 }else{
                     mScore.setText("- " + score.toString());
                 }
-
+                if(scoreRecord!=score){
+                    scoreRecord = score;
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(400);
+                }
             }
         };
         ScoreManager scoreManager = new ScoreManager(mApiClient, scoreCallBack, mGameController);
