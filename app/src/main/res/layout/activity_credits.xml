@@ -4,59 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
+    android:padding="12dp"
+    android:orientation="horizontal"
+    android:background="@drawable/home_background"
     tools:context="ca.sfu.pacmacro.CreditsActivity">
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/title_characters"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="@dimen/pacman_icon_size"
-                android:layout_height="@dimen/pacman_icon_size"
-                android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/pacman"
-                android:onClick="onLogoClick"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/pacman_icon_size"
+                    android:layout_height="@dimen/pacman_icon_size"
+                    android:layout_marginRight="10dp"
+                    app:srcCompat="@drawable/pacman"
+                    android:onClick="onLogoClick"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40dp"
+                    android:textColor="@color/color_ffffff"
+                    android:text="@string/app_name"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="45dp"
-                android:text="@string/app_name"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/color_ffffff"
+                android:textSize="15sp"
+                android:text="@string/versionName"/>
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="15sp"
-            android:text="@string/versionName"/>
+            android:layout_gravity="center_horizontal"
+            android:textSize="40dp"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/colorAccent"
+            android:text="@string/credits_activity_sponsors_heading"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/mobifyLogo"
+            android:src="@drawable/mobify_logo"
+            android:contentDescription="@string/mobify_logo_content_description" />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/csssLogo"
+            app:srcCompat="@drawable/csss_logo"
+            android:contentDescription="@string/csss_logo_content_description" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="40dp"
-        android:text="@string/credits_activity_sponsors_heading"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:id="@+id/mobifyLogo"
-        android:src="@drawable/mobify_logo"
-        android:contentDescription="@string/mobify_logo_content_description" />
-
-    <ImageView
-        android:layout_width="@dimen/sfu_icon_width"
-        android:layout_height="@dimen/sfu_icon_height"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/csssLogo"
-        app:srcCompat="@drawable/csss_logo"
-        android:contentDescription="@string/csss_logo_content_description" />
 </LinearLayout>
