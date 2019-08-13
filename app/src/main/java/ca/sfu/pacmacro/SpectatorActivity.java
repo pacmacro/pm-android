@@ -1,11 +1,13 @@
 package ca.sfu.pacmacro;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,6 +54,7 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
 
     private ImageView mTeamIcon;
     private TextView mTeamScore;
+    private int scoreRecord = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +79,11 @@ public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCa
                     mTeamScore.setText(score.toString());
                 }else{
                     mTeamScore.setText("- " + score.toString());
+                }
+                if(scoreRecord != score){
+                    scoreRecord = score;
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(400);
                 }
 
             }

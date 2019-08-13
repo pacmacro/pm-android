@@ -64,7 +64,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
             mSelectedCharacterType = (Character.CharacterType) intent.getExtras().get("Character");
             return returnValue;
         }
-        return -1;
+        return Service.START_NOT_STICKY;
     }
 
     private void registerListeners() {
@@ -84,7 +84,7 @@ public class PlayerService extends Service implements GoogleApiClient.Connection
         else
             startForeground(NOTIFICATION_ID, notification);
 
-        Toast.makeText(PlayerService.this, "Service started", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(PlayerService.this, "Service started", Toast.LENGTH_SHORT).show();
     }
 
     private void unregisterListeners() {
