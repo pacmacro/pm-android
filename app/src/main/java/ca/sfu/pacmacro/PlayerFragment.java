@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import ca.sfu.pacmacro.Model.Character;
 
@@ -75,7 +75,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener{
                 ((ImageView)v).setImageResource(R.drawable.clyde_selected);
                 break;
             case R.id.player_go:
-                Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Character selected: " + selectedCharacter, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), PlayerActivity.class);
                 intent.putExtra("Character", selectedCharacter);
                 startActivity(intent);

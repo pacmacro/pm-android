@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -14,7 +15,9 @@ import java.util.Map;
 import ca.sfu.pacmacro.API.events.CharacterSentEvent;
 import ca.sfu.pacmacro.API.events.CharacterStateSentEvent;
 import ca.sfu.pacmacro.API.events.CharactersReceivedEvent;
+import ca.sfu.pacmacro.API.events.GameStateReceivedEvent;
 import ca.sfu.pacmacro.API.events.PelletReceivedEvent;
+import ca.sfu.pacmacro.API.events.ScoreReceivedEvent;
 import ca.sfu.pacmacro.API.model.CharacterData;
 import ca.sfu.pacmacro.API.model.Id;
 import ca.sfu.pacmacro.API.model.PelletData;
@@ -76,6 +79,39 @@ public class PacMacroClient {
 
             @Override
             public void onFailure(Throwable t) {
+            }
+        });
+    }
+
+    public void getScore() {
+        Call<JsonObject> getScore = service.getScore();
+
+        getScore.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Response<JsonObject> response) {
+                EventBus.getDefault().post(new ScoreReceivedEvent(response.body()));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.v(TAG, "get score failed: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getGameState() {
+        Call<JsonObject> getScore = service.getGameState();
+
+        getScore.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Response<JsonObject> response) {
+                EventBus.getDefault().post(new GameStateReceivedEvent(response.body()));
+                //Log.v(TAG, "GameState responded");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.v(TAG, "get GameState failed: " + t.getMessage());
             }
         });
     }

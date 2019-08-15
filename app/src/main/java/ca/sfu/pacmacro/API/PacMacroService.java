@@ -1,5 +1,9 @@
 package ca.sfu.pacmacro.API;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +44,14 @@ public interface PacMacroService {
 
     @GET("player/details")
     Call<List<CharacterData>> getCharacterDetails();
+
+    @Headers("Content-Type: application/json")
+    @GET("gamestate/score")
+    Call<JsonObject> getScore();
+
+    @Headers("Content-Type: application/json")
+    @GET("gamestate")
+    Call<JsonObject> getGameState();
 
     @GET("pacdots")
     Call<List<PelletData>> getPellets();

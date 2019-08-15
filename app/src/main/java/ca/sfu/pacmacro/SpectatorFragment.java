@@ -57,11 +57,6 @@ public class SpectatorFragment extends Fragment implements View.OnClickListener{
                 mPacman.setImageResource(R.drawable.pacman_selected_long);
                 break;
             case R.id.team_go:
-                if(mTeam==CharacterDisplayCriteria.CRITERIA_GHOST_TEAM){
-                    Toast.makeText(getContext(),"You are on the ghosts' team, Have fun!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getContext(),"You are on the Pacman's team, good luck!", Toast.LENGTH_SHORT).show();
-                }
                 goToSpectatorActivity(mTeam);
                 break;
         }

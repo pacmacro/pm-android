@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,13 +23,19 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.os.Vibrator;
 
 import ca.sfu.pacmacro.API.PacMacroClient;
 import ca.sfu.pacmacro.Controller.CharacterDisplayCriteria;
 import ca.sfu.pacmacro.Controller.CharacterManager;
 import ca.sfu.pacmacro.Controller.GameController;
+import ca.sfu.pacmacro.Controller.GameStateCallback;
+import ca.sfu.pacmacro.Controller.GameStateManager;
+import ca.sfu.pacmacro.Controller.ScoreCallBack;
+import ca.sfu.pacmacro.Controller.ScoreManager;
 import ca.sfu.pacmacro.Model.Character;
 
 public class PlayerActivity extends BaseActivity {
@@ -39,8 +46,10 @@ public class PlayerActivity extends BaseActivity {
     private GameController mGameController;
     private CharacterDisplayCriteria mDisplayCriteria;
     private Character.CharacterType mSelectedCharacterType;
-    private Character mSelectedCharacter;
     private AppCompatDialog gpsAlertDialog;
+    private boolean isPacman = true;
+    private TextView mGameState, mPacmanState, mScore;
+    private int scoreRecord = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,41 +76,48 @@ public class PlayerActivity extends BaseActivity {
             startLocationService(mSelectedCharacterType);
         }
 
-        Button stopButton = (Button) findViewById(R.id.player_stop_service);
-        if (stopButton != null) {
-            stopButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showStopWarning();
-                }
-            });
+        ImageView scoreIcon = findViewById(R.id.pScoreIcon);
+        if(mSelectedCharacterType != Character.CharacterType.PACMAN){
+            isPacman = false;
+            scoreIcon.setImageResource(R.drawable.home_ghost);
         }
-
-        Button tagButton = (Button) findViewById(R.id.player_tag);
-        if (tagButton != null) {
-            tagButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Character[] characters = mCharacterManager.getCharacters();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
-                    builder.setTitle(getString(R.string.player_tag_select));
-
-                    ArrayAdapter<Character> characterArrayAdapter = new ArrayAdapter<Character>(getApplicationContext(),
-                                    R.layout.select_dialog_singlechoice, characters);
-                    builder.setAdapter(characterArrayAdapter, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            Character character = characters[item];
-                            sendTagRequest(character);
-                            dialog.dismiss();
-                        }
-                    });
-
-                    Dialog characterSelectDialog = builder.create();
-                    characterSelectDialog.show();
+        mGameState = findViewById(R.id.gameState);
+        mPacmanState = findViewById(R.id.pacmanState);
+        mScore = findViewById(R.id.pScoreNum);
+        ScoreCallBack scoreCallBack = new ScoreCallBack() {
+            @Override
+            public void ScoreCallBack(Integer score) {
+                if(isPacman || score==0){
+                    mScore.setText(score.toString());
+                }else{
+                    mScore.setText("- " + score.toString());
                 }
-            });
-        }
+                if(scoreRecord!=score){
+                    scoreRecord = score;
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(400);
+                }
+            }
+        };
+        ScoreManager scoreManager = new ScoreManager(mApiClient, scoreCallBack, mGameController);
+
+        GameStateCallback gameStateCallback = new GameStateCallback() {
+            @Override
+            public void GameStateCallback(int type, String GameState) {
+                if (type==0){
+                    mGameState.setText(GameState);
+                }
+                else{
+                    mPacmanState.setText(GameState);
+                    if(GameState.compareTo("POWERUP")==0){
+                        mPacmanState.setTextColor(0xFFFF5555);
+                    }else{
+                        mPacmanState.setTextColor(0xFFFFFFFF);
+                    }
+                }
+            }
+        };
+        GameStateManager gameStateManager = new GameStateManager(mApiClient, gameStateCallback, mGameController);
 
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
     }
@@ -189,11 +205,6 @@ public class PlayerActivity extends BaseActivity {
         startService(intent);
     }
 
-    private void sendTagRequest(Character character) {
-        Character.CharacterState characterState = Character.CharacterState.CAPTURED;
-        mApiClient.updateCharacterState(character.getType(), characterState);
-    }
-
     @RequiresApi(api = 28)
     @Override
     protected void onResume() {
@@ -264,6 +275,13 @@ public class PlayerActivity extends BaseActivity {
         dialogBuilder.setCancelable(false);
         dialogBuilder.setPositiveButton(getApplicationContext().getString(R.string.go_to_settings), null)
                 .create();
+        dialogBuilder.setNegativeButton("Go Back",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        stopPlaying();
+                        dialog.cancel();
+                    }
+                });
 
         AppCompatDialog alertDialog = dialogBuilder.create();
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {

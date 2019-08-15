@@ -11,7 +11,8 @@ public class LobbyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         if(savedInstanceState == null) {
-            changeFrame(new HomeFragment());
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
         }
     }
 
