@@ -16,7 +16,7 @@ public class CreditsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         setContentView(R.layout.activity_credits);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
