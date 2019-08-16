@@ -38,7 +38,7 @@ import ca.sfu.pacmacro.Controller.ScoreManager;
 
 import static android.graphics.Color.rgb;
 
-public class SpectatorActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SpectatorActivity extends BaseActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private PacMacroClient mApiClient;

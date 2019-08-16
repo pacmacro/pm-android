@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsActivity extends BaseActivity {
     SharedPreferences preferences;
     int clickCount = 0;
 
@@ -16,6 +16,7 @@ public class CreditsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //getSupportActionBar().hide();
         setContentView(R.layout.activity_credits);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
