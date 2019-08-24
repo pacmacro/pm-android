@@ -39,4 +39,9 @@
     <string name="warning">Warning</string>
     <string name="location_permission_dialog_msg">Location permissions are required to play this game. Please visit Settings to allow the app to access this device\'s Location.</string>
     <string name="ok">Ok</string>
+
+    <!-- Lobby Activity -->
+    <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit from app?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 </resources>
